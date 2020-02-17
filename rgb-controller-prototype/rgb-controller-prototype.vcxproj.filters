@@ -18,15 +18,15 @@
     <ClCompile Include="rgb-controller-prototype.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ColourData.cpp">
+    <ClCompile Include="LED.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Colour.cpp">
+    <ClCompile Include="ColourData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Colour.h">
+    <ClInclude Include="LED.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColourData.h">

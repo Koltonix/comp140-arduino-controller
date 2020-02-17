@@ -1,2 +1,14 @@
-﻿  rgb-controller-prototype.cpp
-  rgb-controller-prototype.vcxproj -> D:\Christopher Robertson\comp140-arduino-controller\rgb-controller-prototype\Debug\rgb-controller-prototype.exe
+﻿  ColourData.cpp
+  LED.cpp
+  rgb-controller-prototype.cpp
+D:\University\1st Year\COMP140\comp140-arduino-controller\rgb-controller-prototype\ColourData.cpp(2,1): error C2011: 'ColourData': 'class' type redefinition
+D:\University\1st Year\COMP140\comp140-arduino-controller\rgb-controller-prototype\ColourData.cpp(1): message : see declaration of 'ColourData'
+D:\University\1st Year\COMP140\comp140-arduino-controller\rgb-controller-prototype\ColourData.h(3,13): error C2027: use of undefined type 'ColourData'
+D:\University\1st Year\COMP140\comp140-arduino-controller\rgb-controller-prototype\ColourData.cpp(1): message : see declaration of 'ColourData'
+D:\University\1st Year\COMP140\comp140-arduino-controller\rgb-controller-prototype\ColourData.h(4,1): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+D:\University\1st Year\COMP140\comp140-arduino-controller\rgb-controller-prototype\ColourData.h(22,2): error C2065: 'r': undeclared identifier
+D:\University\1st Year\COMP140\comp140-arduino-controller\rgb-controller-prototype\ColourData.h(23,2): error C2065: 'g': undeclared identifier
+D:\University\1st Year\COMP140\comp140-arduino-controller\rgb-controller-prototype\ColourData.h(24,2): error C2065: 'b': undeclared identifier
+D:\University\1st Year\COMP140\comp140-arduino-controller\rgb-controller-prototype\ColourData.h(25,1): warning C4508: '{ctor}': function should return a value; 'void' return type assumed
+D:\University\1st Year\COMP140\comp140-arduino-controller\rgb-controller-prototype\rgb-controller-prototype.cpp(7): fatal error C1075: '{': no matching token found
+  Generating Code...

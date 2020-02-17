@@ -151,13 +151,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Colour.cpp" />
     <ClCompile Include="ColourData.cpp" />
+    <ClCompile Include="LED.cpp" />
     <ClCompile Include="rgb-controller-prototype.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Colour.h" />
     <ClInclude Include="ColourData.h" />
+    <ClInclude Include="LED.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
