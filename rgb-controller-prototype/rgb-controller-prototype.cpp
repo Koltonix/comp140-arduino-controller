@@ -1,15 +1,11 @@
 #include <iostream>
-#include "ColourData.cpp"
-#include "ColourData.h"
-#include "LED.cpp"
+#include <string>
+#include "Colour.h"
 
 int main()
 {
-//    std::cout << "Hello World!\n";
-//
-//    Colour ledColour = Colour(0, 0, 0);
-//    //LED firstLED = LED(ledColour, 0);
-//
-//    std::cout << ledColour.r << ", " << ledColour.g << ", " << ledColour.b;
-//}
-
+    std::cout << "Hello World!\n";
+	Colour colour = Colour(300, 128, 255);
+	
+	std::cout << colour.r << ", " << colour.g << ", " << colour.b;
+}
