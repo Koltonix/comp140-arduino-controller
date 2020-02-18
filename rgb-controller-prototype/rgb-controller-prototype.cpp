@@ -4,8 +4,7 @@
 
 int main()
 {
-    std::cout << "Hello World!\n";
-	Colour colour = Colour(300, 128, 255);
+	Colour colour = Colour(255, 255, 255);
 	
 	std::cout << colour.r << ", " << colour.g << ", " << colour.b;
 }
