@@ -9,12 +9,45 @@ enum InputType
 {
 	LEFT,
 	RIGHT,
-	EXIT,
+	QUIT,
 	NONE
 };
 
 bool isRunning;
 InputType currentInput;
+
+void Start();
+void Update();
+void GetInput();
+
+
+void Start()
+{
+	Colour colour = Colour(97, 220, 134);
+	Led led = Led(&colour, 1);
+
+	HSV hsv = HSV();
+	hsv = hsv.RGBToHSV(colour.r, colour.g, colour.b);
+
+	std::cout << hsv.h << ", " << hsv.s << ", " << hsv.v;
+}
+
+void Update()
+{
+	GetInput();
+	std::cout << currentInput << "\n";
+}
+
+int main()
+{
+	isRunning = false;
+	Start();
+
+	while (isRunning)
+	{
+		Update();
+	}
+}
 
 void GetInput()
 {
@@ -29,7 +62,7 @@ void GetInput()
 				currentInput = InputType(RIGHT);
 				break;
 			case 'x':
-				currentInput = InputType(EXIT);
+				currentInput = InputType(QUIT);
 				isRunning = false;
 				break;
 			default:
@@ -39,28 +72,5 @@ void GetInput()
 	}
 }
 
-void Start()
-{
-	Colour colour = Colour(255, 255, 255);
-	Led led = Led(&colour, 1);
 
-	std::cout << led.colour->r << ", " << led.colour->g << ", " << led.colour->b;
-}
-
-void Update()
-{
-	GetInput();
-	std::cout << currentInput << "\n";
-}
-
-int main()
-{
-	isRunning = true;
-	Start();
-
-	while (isRunning)
-	{
-		Update();
-	}
-}
 

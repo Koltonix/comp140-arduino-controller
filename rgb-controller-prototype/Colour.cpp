@@ -1,5 +1,7 @@
 #include "Colour.h"
+#include "HSV.h"
 
+Colour::Colour() : r(0), g(0), b(0) {}
 Colour::Colour(int r, int g, int b) : r(r), g(g), b(b)
 {
 	int* rgb = new int[3]{ r, g, b };
