@@ -153,12 +153,14 @@
   <ItemGroup>
     <ClCompile Include="Colour.cpp" />
     <ClCompile Include="HSV.cpp" />
+    <ClCompile Include="Lane.cpp" />
     <ClCompile Include="Led.cpp" />
     <ClCompile Include="rgb-controller-prototype.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Colour.h" />
     <ClInclude Include="HSV.h" />
+    <ClInclude Include="Lane.h" />
     <ClInclude Include="Led.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
