@@ -24,23 +24,19 @@ void GetInput();
 
 void Start()
 {
-	Colour colour = Colour(97, 220, 134);
-	Colour secondaryColour = Colour(255, 255, 255);
+	//Lane lane = Lane(0);
 
-	Led led = Led(&colour, 1);
+	//for (int i = 1; i < 4; i++)
+	//{
+	//	Colour newColour = Colour(i, i, i);
+	//	lane.AddNewColour(newColour);
+	//}
 
-	HSV hsv = HSV();
-	hsv = hsv.RGBToHSV(colour.r, colour.g, colour.b);
+	//std::cout << lane.colourOrder.size() << " long\n";
+	//Colour colour = lane.GetColourAtIndex(0);
 
-	//std::cout << hsv.h << ", " << hsv.s << ", " << hsv.v;
-
-	Lane lane = Lane(0);
-	lane.AddNewColour(&colour);
-	lane.AddNewColour(&secondaryColour);
-
-	std::cout << lane.colourQueue.front().r << ", " << lane.colourQueue.front().g << ", " << lane.colourQueue.front().b << "\n";
-	lane.colourQueue.pop();
-	std::cout << lane.colourQueue.front().r << ", " << lane.colourQueue.front().g << ", " << lane.colourQueue.front().b << "\n";
+	Colour *colour = new Colour(0, 0, 0);
+	std::cout << colour->r << colour->g << colour->b << "\n";
 }
 
 void Update()
