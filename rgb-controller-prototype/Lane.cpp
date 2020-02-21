@@ -1,31 +1,46 @@
+#include <queue>
+#include <iostream>
+
 #include "Lane.h"
 #include "Colour.h"
-#include <iostream>;
 
 using namespace std;
 
 Lane::Lane(int laneIndex)
 {
 	this->laneIndex = laneIndex;
+	this->colourOrder = queue<Colour>();
+
+	this->currentColour = Colour(0, 0, 0);
+	this->availableColours = new Colour[1]{ Colour(0, 0, 0) };
 }
 
 void Lane::AddNewColour(Colour colour)
 {
-	colourOrder.push_front(colour);
+	colourOrder.push(colour);
 }
 
-Colour Lane::GetColourAtIndex(int index) 
+Colour *Lane::GetColourAtIndex(int index) 
 {
-	//Requires fixing
-	/*if (colourOrder.size() > index)
+	queue<Colour> _colourOrder = colourOrder;
+
+	cout << _colourOrder.size() << ", " << index << endl;
+
+	if (_colourOrder.size() > index)
 	{
-		list<Colour>::iterator colourIterator = colourOrder.begin();
-		advance(colourIterator, index);
+		cout << "Loop Starting" << endl;
+		for (int i = 0; i < index; i++)
+		{
+			cout << i << endl;
+			if (i == index)
+			{
+				return &_colourOrder.front();
+			}
 
-		Colour colour = *colourIterator;
-		cout << colour.r << " R Value \n";
-		return *colourIterator;
-	}*/
-
-	return Colour(0, 0, 0);
+			
+			_colourOrder.pop();
+		}
+	}
+	
+	return new Colour(128, 128, 128);
 }

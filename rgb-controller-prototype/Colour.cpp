@@ -6,7 +6,7 @@ Colour::Colour(int r, int g, int b) : r(r), g(g), b(b)
 {
 	int* rgb = new int[3]{ r, g, b };
 
-	for (int i = 0; i < sizeof(rgb); i++)
+	for (int i = 0; i < sizeof(rgb) - 1; i++)
 	{
 		if (rgb[i] > 255) rgb[i] = 255;
 		else if (rgb[i] < 0) rgb[i] = 0;

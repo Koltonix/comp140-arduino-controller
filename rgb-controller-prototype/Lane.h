@@ -1,6 +1,5 @@
 #pragma once
 #include <queue>
-#include <list>
 #include "Colour.h"
 
 using namespace std;
@@ -10,12 +9,12 @@ class Lane
 public:
 	int laneIndex;
 
-	list <Colour> colourOrder = list<Colour>();
+	queue <Colour> colourOrder;
 
 	Colour currentColour;
-	Colour* availableColours = { new Colour(255, 255, 255) };
+	Colour *availableColours;
 
 	Lane(int index);
 	void AddNewColour(Colour colour);
-	Colour GetColourAtIndex(int index);
+	Colour *GetColourAtIndex(int index);
 };

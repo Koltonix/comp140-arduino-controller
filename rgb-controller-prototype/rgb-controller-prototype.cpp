@@ -6,6 +6,8 @@
 #include "Led.h"
 #include "Lane.h"
 
+using namespace std;
+
 enum InputType
 {
 	LEFT,
@@ -24,25 +26,27 @@ void GetInput();
 
 void Start()
 {
-	//Lane lane = Lane(0);
+	Lane lane = Lane(0);
 
-	//for (int i = 1; i < 4; i++)
-	//{
-	//	Colour newColour = Colour(i, i, i);
-	//	lane.AddNewColour(newColour);
-	//}
+	for (int i = 1; i < 4; i++)
+	{
+		Colour newColour = Colour(i, i, i);
+		lane.AddNewColour(newColour);
+	}
 
-	//std::cout << lane.colourOrder.size() << " long\n";
-	//Colour colour = lane.GetColourAtIndex(0);
+	cout << "Colours Added" << endl;
 
-	Colour *colour = new Colour(0, 0, 0);
-	std::cout << colour->r << colour->g << colour->b << "\n";
+	cout << lane.colourOrder.size() << " long" << endl;
+
+	//Colour colour = *lane.GetColourAtIndex(0);
+
+	//std::cout << colour.r << ", "<< colour.g << ", " << colour.b << endl;
 }
 
 void Update()
 {
 	GetInput();
-	std::cout << currentInput << "\n";
+	std::cout << currentInput << endl;
 }
 
 int main()
