@@ -16,8 +16,8 @@ enum InputType
 	NONE
 };
 
-bool isRunning;
-InputType currentInput;
+bool is_running;
+InputType current_input;
 
 void Start();
 void Update();
@@ -29,12 +29,12 @@ void Start()
 
 	for (int i = 0; i < 3; i++)
 	{
-		lane.colourOrder.push(Colour(i, i, i));
+		lane.colour_order.push(Colour(i, i, i));
 	}
 
 	cout << "Colours Added" << endl;
 
-	cout << lane.colourOrder.size() << " long" << endl;
+	cout << lane.colour_order.size() << " long" << endl;
 
 
 	Colour colour = lane.GetColourAtIndex(0);
@@ -45,15 +45,15 @@ void Start()
 void Update()
 {
 	GetInput();
-	std::cout << currentInput << endl;
+	std::cout << current_input << endl;
 }
 
 int main()
 {
-	isRunning = false;
+	is_running = false;
 	Start();
 
-	while (isRunning)
+	while (is_running)
 	{
 		Update();
 		cout << "running";
@@ -69,17 +69,17 @@ void GetInput()
 		switch (_getch())
 		{
 			case 'a':
-				currentInput = InputType(LEFT);
+				current_input = InputType(LEFT);
 				break;
 			case 'd':
-				currentInput = InputType(RIGHT);
+				current_input = InputType(RIGHT);
 				break;
 			case 'x':
-				currentInput = InputType(QUIT);
-				isRunning = false;
+				current_input = InputType(QUIT);
+				is_running = false;
 				break;
 			default:
-				currentInput = InputType(NONE);
+				current_input = InputType(NONE);
 				break;
 		}
 	}

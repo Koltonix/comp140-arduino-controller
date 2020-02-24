@@ -7,12 +7,12 @@ using namespace std;
 class Lane 
 {
 public:
-	int laneIndex;
+	int lane_index;
 
-	queue <Colour> colourOrder;
+	queue <Colour> colour_order;
 
-	Colour currentColour;
-	Colour *availableColours;
+	Colour selected_colour;
+	Colour *available_colours;
 
 	Lane(int index);
 	void AddNewColour(Colour colour);

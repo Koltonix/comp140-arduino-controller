@@ -4,7 +4,7 @@ class Led
 {
 public:
 	Colour *colour;
-	int displayPosition;
+	int display_position;
 
-	Led(Colour *colour, int displayPosition);
+	Led(Colour *colour, int display_position);
 };

@@ -6,9 +6,9 @@ Colour::Colour() : r(0), g(0), b(0) {}
 Colour::Colour(int r, int g, int b) : r(r), g(g), b(b)
 {
 	int rgb[] = { r, g, b };
-	int rgbLength = sizeof(rgb) / sizeof(rgb[0]);
+	int rgb_length = sizeof(rgb) / sizeof(rgb[0]);
 
-	for (int i = 0; i < rgbLength; i++)
+	for (int i = 0; i < rgb_length; i++)
 	{
 		if (rgb[i] > 255) rgb[i] = 255;
 		else if (rgb[i] < 0) rgb[i] = 0;

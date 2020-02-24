@@ -1,8 +1,8 @@
 #include "Led.h"
 #pragma once
 
-Led::Led(Colour *colour, int displayPosition)
+Led::Led(Colour *colour, int display_position)
 {
 	this->colour = colour;
-	this->displayPosition = displayPosition;
+	this->display_position = display_position;
 }
