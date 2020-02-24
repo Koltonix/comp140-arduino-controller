@@ -1,8 +1,8 @@
 #include <queue>
 #include <iostream>
 
-#include "Lane.h"
-#include "Colour.h"
+#include "lane.h"
+#include "colour.h"
 
 using namespace std;
 

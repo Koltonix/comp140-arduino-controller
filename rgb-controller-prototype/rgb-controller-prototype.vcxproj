@@ -151,17 +151,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Colour.cpp" />
-    <ClCompile Include="HSV.cpp" />
-    <ClCompile Include="Lane.cpp" />
-    <ClCompile Include="Led.cpp" />
+    <ClCompile Include="colour.cpp" />
+    <ClCompile Include="hsv.cpp" />
+    <ClCompile Include="lane.cpp" />
+    <ClCompile Include="led.cpp" />
     <ClCompile Include="rgb-controller-prototype.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Colour.h" />
-    <ClInclude Include="HSV.h" />
-    <ClInclude Include="Lane.h" />
-    <ClInclude Include="Led.h" />
+    <ClInclude Include="colour.h" />
+    <ClInclude Include="hsv.h" />
+    <ClInclude Include="lane.h" />
+    <ClInclude Include="led.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,9 +2,9 @@
 #include <string>
 #include <conio.h>
 
-#include "Colour.h"
-#include "Led.h"
-#include "Lane.h"
+#include "colour.h"
+#include "led.h"
+#include "lane.h"
 
 using namespace std;
 

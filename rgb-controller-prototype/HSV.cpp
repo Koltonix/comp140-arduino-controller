@@ -1,4 +1,4 @@
-#include "HSV.h"
+#include "hsv.h"
 #include <iostream>
 
 HSV::HSV() : h(0), s(0), v(0) {}

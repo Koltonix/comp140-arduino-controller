@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Colour.h"
-#include "HSV.h"
+#include "colour.h"
+#include "hsv.h"
 
 Colour::Colour() : r(0), g(0), b(0) {}
 Colour::Colour(int r, int g, int b) : r(r), g(g), b(b)

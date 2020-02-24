@@ -18,30 +18,30 @@
     <ClCompile Include="rgb-controller-prototype.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Colour.cpp">
+    <ClCompile Include="hsv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Led.cpp">
+    <ClCompile Include="colour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HSV.cpp">
+    <ClCompile Include="lane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Lane.cpp">
+    <ClCompile Include="led.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Colour.h">
+    <ClInclude Include="led.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Led.h">
+    <ClInclude Include="lane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HSV.h">
+    <ClInclude Include="hsv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Lane.h">
+    <ClInclude Include="colour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

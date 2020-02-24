@@ -1,6 +1,6 @@
 #pragma once
 #include <queue>
-#include "Colour.h"
+#include "colour.h"
 
 using namespace std;
 

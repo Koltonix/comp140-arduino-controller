@@ -1,5 +1,5 @@
 #pragma once
-#include"Colour.h"
+#include "colour.h"
 
 class HSV
 {
