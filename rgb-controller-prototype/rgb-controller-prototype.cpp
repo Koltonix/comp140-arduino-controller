@@ -23,20 +23,23 @@ void Start();
 void Update();
 void GetInput();
 
-
 void Start()
 {
-	Lane lane = Lane(0);
+	//Lane lane = Lane(0);
 
-	for (int i = 1; i < 4; i++)
-	{
-		Colour newColour = Colour(i, i, i);
-		lane.AddNewColour(newColour);
-	}
+	Colour firstColour = Colour(255, 255, 255);
+	Colour secondColour = Colour(128, 128, 128);
+	Colour thirdColour = Colour(255, 255, 255);
+
+	/*lane.AddNewColour(firstColour);
+	lane.AddNewColour(secondColour);
+	lane.AddNewColour(thirdColour);*/
 
 	cout << "Colours Added" << endl;
 
-	cout << lane.colourOrder.size() << " long" << endl;
+	cout << firstColour.r << " long" << endl;
+
+	cout << "Didn't run of course";
 
 	//Colour colour = *lane.GetColourAtIndex(0);
 
@@ -57,7 +60,10 @@ int main()
 	while (isRunning)
 	{
 		Update();
+		cout << "running";
 	}
+
+	return 0;
 }
 
 void GetInput()
