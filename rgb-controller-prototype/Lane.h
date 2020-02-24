@@ -16,5 +16,5 @@ public:
 
 	Lane(int index);
 	void AddNewColour(Colour colour);
-	//Colour *GetColourAtIndex(int index);
+	Colour GetColourAtIndex(int index);
 };

@@ -6,12 +6,9 @@ Colour::Colour() : r(0), g(0), b(0) {}
 Colour::Colour(int r, int g, int b) : r(r), g(g), b(b)
 {
 	int rgb[] = { r, g, b };
-	int arraySize = sizeof(rgb);
+	int rgbLength = sizeof(rgb) / sizeof(rgb[0]);
 
-	std::cout << arraySize << std::endl;
-
-	//Change the array size to produce the correct length
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < rgbLength; i++)
 	{
 		if (rgb[i] > 255) rgb[i] = 255;
 		else if (rgb[i] < 0) rgb[i] = 0;

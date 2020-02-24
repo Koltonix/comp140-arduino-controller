@@ -25,25 +25,21 @@ void GetInput();
 
 void Start()
 {
-	//Lane lane = Lane(0);
+	Lane lane = Lane(0);
 
-	Colour firstColour = Colour(255, 255, 255);
-	Colour secondColour = Colour(128, 128, 128);
-	Colour thirdColour = Colour(255, 255, 255);
-
-	/*lane.AddNewColour(firstColour);
-	lane.AddNewColour(secondColour);
-	lane.AddNewColour(thirdColour);*/
+	for (int i = 0; i < 3; i++)
+	{
+		lane.colourOrder.push(Colour(i, i, i));
+	}
 
 	cout << "Colours Added" << endl;
 
-	cout << firstColour.r << " long" << endl;
+	cout << lane.colourOrder.size() << " long" << endl;
 
-	cout << "Didn't run of course";
 
-	//Colour colour = *lane.GetColourAtIndex(0);
+	Colour colour = lane.GetColourAtIndex(0);
 
-	//std::cout << colour.r << ", "<< colour.g << ", " << colour.b << endl;
+	cout << colour.r << ", "<< colour.g << ", " << colour.b << endl;
 }
 
 void Update()

@@ -20,27 +20,22 @@ void Lane::AddNewColour(Colour colour)
 	colourOrder.push(colour);
 }
 
-//Colour *Lane::GetColourAtIndex(int index) 
-//{
-//	queue<Colour> _colourOrder = colourOrder;
-//
-//	cout << _colourOrder.size() << ", " << index << endl;
-//
-//	if (_colourOrder.size() > index)
-//	{
-//		cout << "Loop Starting" << endl;
-//		for (int i = 0; i < index; i++)
-//		{
-//			cout << i << endl;
-//			if (i == index)
-//			{
-//				return &_colourOrder.front();
-//			}
-//
-//			
-//			_colourOrder.pop();
-//		}
-//	}
-//	
-//	return new Colour(128, 128, 128);
-//}
+Colour Lane::GetColourAtIndex(int index) 
+{
+	queue<Colour> _colourOrder = colourOrder;
+
+	if (_colourOrder.size() > index)
+	{
+		for (int i = 0; i < _colourOrder.size(); i++)
+		{
+			if (i == index)
+			{
+				return _colourOrder.front();
+			}
+
+			_colourOrder.pop();
+		}
+	}
+	
+	return Colour(255, 255, 255);
+}
