@@ -17,4 +17,10 @@ public:
 	Lane(int index);
 	void AddNewColour(Colour colour);
 	Colour GetColourAtIndex(int index);
+
+	float GetCurrentPercentage();
+	void SetCurrentPercentage(float p);
+
+private:
+	float current_percentage;
 };

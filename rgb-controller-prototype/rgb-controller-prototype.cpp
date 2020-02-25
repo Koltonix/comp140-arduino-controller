@@ -10,14 +10,17 @@ using namespace std;
 
 enum InputType
 {
+	NONE,
 	LEFT,
 	RIGHT,
 	QUIT,
-	NONE
 };
 
 bool is_running;
 InputType current_input;
+
+Lane lane = Lane(0);
+float input_mutliplier = 20;
 
 void Start();
 void Update();
@@ -25,8 +28,6 @@ void GetInput();
 
 void Start()
 {
-	Lane lane = Lane(0);
-
 	for (int i = 0; i < 3; i++)
 	{
 		lane.colour_order.push(Colour(i, i, i));
@@ -38,25 +39,26 @@ void Start()
 
 
 	Colour colour = lane.GetColourAtIndex(0);
-
 	cout << colour.r << ", "<< colour.g << ", " << colour.b << endl;
 }
 
 void Update()
 {
 	GetInput();
-	std::cout << current_input << endl;
+
+	if (current_input == 1) lane.SetCurrentPercentage(lane.GetCurrentPercentage() + input_mutliplier);
+	else if (current_input == 2) lane.SetCurrentPercentage(lane.GetCurrentPercentage() - input_mutliplier);
+	cout << lane.GetCurrentPercentage() << endl;
 }
 
 int main()
 {
-	is_running = false;
+	is_running = true;
 	Start();
 
 	while (is_running)
 	{
 		Update();
-		cout << "running";
 	}
 
 	return 0;
@@ -64,24 +66,21 @@ int main()
 
 void GetInput()
 {
-	if (_kbhit())
+	switch (_getch())
 	{
-		switch (_getch())
-		{
-			case 'a':
-				current_input = InputType(LEFT);
-				break;
-			case 'd':
-				current_input = InputType(RIGHT);
-				break;
-			case 'x':
-				current_input = InputType(QUIT);
-				is_running = false;
-				break;
-			default:
-				current_input = InputType(NONE);
-				break;
-		}
+		case 'a':
+			current_input = InputType(LEFT);
+			break;
+		case 'd':
+			current_input = InputType(RIGHT);
+			break;
+		case 'x':
+			current_input = InputType(QUIT);
+			is_running = false;
+			break;
+		default:
+			current_input = InputType(NONE);
+			break;
 	}
 }
 

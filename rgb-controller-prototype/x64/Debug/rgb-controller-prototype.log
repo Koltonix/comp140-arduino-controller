@@ -1,7 +1,2 @@
-﻿  colour.cpp
-  hsv.cpp
-  lane.cpp
-  led.cpp
-  rgb-controller-prototype.cpp
-  Generating Code...
-  rgb-controller-prototype.vcxproj -> D:\University\1st Year\COMP140\comp140-arduino-controller\rgb-controller-prototype\x64\Debug\rgb-controller-prototype.exe
+﻿  lane.cpp
+  rgb-controller-prototype.vcxproj -> D:\Christopher Robertson\comp140-arduino-controller\rgb-controller-prototype\x64\Debug\rgb-controller-prototype.exe
