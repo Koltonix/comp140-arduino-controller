@@ -1,5 +1,6 @@
 #include <queue>
 #include <iostream>
+#include <cmath>
 
 #include "lane.h"
 #include "colour.h"
@@ -23,6 +24,8 @@ Lane::Lane(int laneIndex)
 		Colour(255, 0, 192),
 		Colour(255, 255, 0)
 	};
+
+	this->intervalToChangeColour = 360 / sizeof(available_colours);
 }
 
 void Lane::AddNewColour(Colour colour)
@@ -50,10 +53,22 @@ Colour Lane::GetColourAtIndex(int index)
 	return Colour(255, 255, 255);
 }
 
+Colour Lane::GetColourAtAngle(float angle)
+{
+	if (angle > 360 || angle < 0) return Colour(0, 0, 0);
+
+	int roundedToInterval = (angle + intervalToChangeColour / 2);
+	roundedToInterval -= roundedToInterval % int(round(intervalToChangeColour));
+	int colourIndex = (round(roundedToInterval) / 360) * sizeof(available_colours);
+	
+	return available_colours[colourIndex];
+}
+
 float Lane::GetCurrentPercentage()
 {
 	return this->current_percentage;
 }
+
 
 void Lane::SetCurrentPercentage(float p)
 {

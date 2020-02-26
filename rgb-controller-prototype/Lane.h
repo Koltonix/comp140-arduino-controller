@@ -14,9 +14,12 @@ public:
 	Colour selected_colour;
 	Colour *available_colours;
 
+	float intervalToChangeColour;
+
 	Lane(int index);
 	void AddNewColour(Colour colour);
 	Colour GetColourAtIndex(int index);
+	Colour GetColourAtAngle(float angle);
 
 	float GetCurrentPercentage();
 	void SetCurrentPercentage(float p);
