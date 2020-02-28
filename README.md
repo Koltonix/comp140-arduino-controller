@@ -8,5 +8,6 @@
 
 ## Reference Videos
 - [Rotary Encoder Tutorial](https://www.youtube.com/watch?v=5QBeKaVrWzw)
+- [Rotary Encoder RGB Source Code and Diagrams](https://github.com/sparkfun/Rotary_Encoder_Breakout-Illuminated)
 - [Controlling WS2812B LED Strips](https://www.youtube.com/watch?v=UhYu0k2woRM)
 - [LCD Screen Tutorial](https://www.youtube.com/watch?v=dZZynJLmTn8)
