@@ -14,6 +14,7 @@
 
 ## LED Strips
 - [Controlling WS2812B LED Strips](https://www.youtube.com/watch?v=UhYu0k2woRM)
+- [Arduino NeoPixel LED Tutorial](https://www.youtube.com/watch?v=mliaJrkme2U)
 
 ## LCD Screen
 - [LCD Screen Tutorial](https://www.youtube.com/watch?v=dZZynJLmTn8)
