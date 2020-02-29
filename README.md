@@ -7,7 +7,13 @@
 - [LCD Screen](https://coolcomponents.co.uk/products/green-16x2-lcd-display?_pos=4&_sid=11588eb70&_ss=r)
 
 ## Reference Videos
+### Rotary Encoder
 - [Rotary Encoder Tutorial](https://www.youtube.com/watch?v=5QBeKaVrWzw)
 - [Rotary Encoder RGB Source Code and Diagrams](https://github.com/sparkfun/Rotary_Encoder_Breakout-Illuminated)
+- [Rotary Encoder Wiring Tutorial with Code](https://www.youtube.com/watch?v=V1txmR8GXzE)
+
+## LED Strips
 - [Controlling WS2812B LED Strips](https://www.youtube.com/watch?v=UhYu0k2woRM)
+
+## LCD Screen
 - [LCD Screen Tutorial](https://www.youtube.com/watch?v=dZZynJLmTn8)
