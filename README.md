@@ -10,6 +10,7 @@
 ### Rotary Encoder
 - [Rotary Encoder Tutorial](https://www.youtube.com/watch?v=5QBeKaVrWzw)
 - [Rotary Encoder RGB Source Code and Diagrams](https://github.com/sparkfun/Rotary_Encoder_Breakout-Illuminated)
+- [Rotary Encoder Simple Tutorial](https://www.instructables.com/id/Tutorial-of-Rotary-Encoder-With-Arduino/)
 - [Rotary Encoder Wiring Tutorial with Code](https://www.youtube.com/watch?v=V1txmR8GXzE)
 
 ## LED Strips
