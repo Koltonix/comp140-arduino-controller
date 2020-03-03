@@ -26,7 +26,7 @@ void Lane::AddNewColour(Colour colour)
 void Lane::RemoveNextColour()
 {
 	this->colour_order.pop();
-	//Get a new colour
+	this->colour_order.push(GetRandomColourPreset());
 }
 
 Colour Lane::GetColourAtIndex(int index) 
@@ -94,6 +94,7 @@ Colour Lane::GetRandomColourPreset()
 
 	srand(time(NULL));
 	int random_value = rand() % available_colours_length;
+	cout << random_value << " random value" << endl;
 
 	return available_colours[random_value];
 }	

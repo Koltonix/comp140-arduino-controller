@@ -42,6 +42,15 @@ void Start()
 	cout << colour.r << ", "<< colour.g << ", " << colour.b << endl;
 
 	cout << lane.GetColourAtAngle(360).r << endl;
+
+	for (int i = 0; i < 5; i++)
+	{
+		Colour front_colour = lane.colour_order.front();
+		cout << front_colour.r << ", " << front_colour.g << ", " << front_colour.b << endl;
+
+		lane.RemoveNextColour();
+		cout << endl;
+	}
 }
 
 void Update()
