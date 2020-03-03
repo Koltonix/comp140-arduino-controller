@@ -1,6 +1,7 @@
 #include <queue>
 #include <iostream>
 #include <cmath>
+#include <ctime>
 
 #include "lane.h"
 #include "colour.h"
@@ -13,24 +14,19 @@ Lane::Lane(int laneIndex)
 	this->colour_order = queue<Colour>();
 
 	this->selected_colour = Colour(0, 0, 0);
-	this->available_colours = new Colour[8]
-	{
-		Colour(255, 0, 0),
-		Colour(255, 192, 0),
-		Colour(128, 255, 0),
-		Colour(0, 255, 255),
-		Colour(0, 64, 255),
-		Colour(128, 0, 255),
-		Colour(255, 0, 192),
-		Colour(255, 255, 0)
-	};
 
-	this->interval_to_change_colour = 360 / sizeof(available_colours);
+	this->interval_to_change_colour = 360 / available_colours.size() - 1;
 }
 
 void Lane::AddNewColour(Colour colour)
 {
 	colour_order.push(colour);
+}
+
+void Lane::RemoveNextColour()
+{
+	this->colour_order.pop();
+	//Get a new colour
 }
 
 Colour Lane::GetColourAtIndex(int index) 
@@ -59,7 +55,7 @@ Colour Lane::GetColourAtAngle(float angle)
 
 	int roundedToInterval = (angle + interval_to_change_colour / 2);
 	roundedToInterval -= roundedToInterval % int(round(interval_to_change_colour));
-	int colourIndex = (round(roundedToInterval) / 360) * sizeof(available_colours);
+	int colourIndex = (round(roundedToInterval) / 360) * available_colours.size() - 1;
 	
 	return available_colours[colourIndex];
 }
@@ -91,3 +87,13 @@ bool Lane::NextColourIsCurrent(Colour current_colour)
 
 	return true;
 }
+
+Colour Lane::GetRandomColourPreset()
+{	
+	int available_colours_length = available_colours.size() - 1;
+
+	srand(time(NULL));
+	int random_value = rand() % available_colours_length;
+
+	return available_colours[random_value];
+}	

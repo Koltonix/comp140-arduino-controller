@@ -1,2 +1,9 @@
-﻿  rgb-controller-prototype.cpp
+﻿  lane.cpp
+D:\Christopher Robertson\comp140-arduino-controller\rgb-controller-prototype\lane.cpp(18,67): warning C4244: '=': conversion from 'unsigned __int64' to 'float', possible loss of data
+D:\Christopher Robertson\comp140-arduino-controller\rgb-controller-prototype\lane.cpp(56,24): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Christopher Robertson\comp140-arduino-controller\rgb-controller-prototype\lane.cpp(58,18): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Christopher Robertson\comp140-arduino-controller\rgb-controller-prototype\lane.cpp(93,61): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  rgb-controller-prototype.cpp
+  Generating Code...
+D:\Christopher Robertson\comp140-arduino-controller\rgb-controller-prototype\lane.cpp(95,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   rgb-controller-prototype.vcxproj -> D:\Christopher Robertson\comp140-arduino-controller\rgb-controller-prototype\x64\Debug\rgb-controller-prototype.exe

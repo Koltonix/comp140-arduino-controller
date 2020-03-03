@@ -41,7 +41,7 @@ void Start()
 	Colour colour = lane.GetColourAtIndex(0);
 	cout << colour.r << ", "<< colour.g << ", " << colour.b << endl;
 
-	cout << lane.GetColourAtAngle(135).r << endl;
+	cout << lane.GetColourAtAngle(360).r << endl;
 }
 
 void Update()
