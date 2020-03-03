@@ -14,10 +14,13 @@ public:
 	Colour selected_colour;
 	Colour *available_colours;
 
-	float intervalToChangeColour;
+	float interval_to_change_colour;
 
 	Lane(int index);
+
 	void AddNewColour(Colour colour);
+	void RemoveNextColour();
+
 	Colour GetColourAtIndex(int index);
 	Colour GetColourAtAngle(float angle);
 
@@ -26,4 +29,6 @@ public:
 
 private:
 	float current_percentage;
+
+	bool NextColourIsCurrent(Colour current_colour);
 };

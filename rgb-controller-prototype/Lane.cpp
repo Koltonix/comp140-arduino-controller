@@ -25,7 +25,7 @@ Lane::Lane(int laneIndex)
 		Colour(255, 255, 0)
 	};
 
-	this->intervalToChangeColour = 360 / sizeof(available_colours);
+	this->interval_to_change_colour = 360 / sizeof(available_colours);
 }
 
 void Lane::AddNewColour(Colour colour)
@@ -57,8 +57,8 @@ Colour Lane::GetColourAtAngle(float angle)
 {
 	if (angle > 360 || angle < 0) return Colour(0, 0, 0);
 
-	int roundedToInterval = (angle + intervalToChangeColour / 2);
-	roundedToInterval -= roundedToInterval % int(round(intervalToChangeColour));
+	int roundedToInterval = (angle + interval_to_change_colour / 2);
+	roundedToInterval -= roundedToInterval % int(round(interval_to_change_colour));
 	int colourIndex = (round(roundedToInterval) / 360) * sizeof(available_colours);
 	
 	return available_colours[colourIndex];
@@ -69,10 +69,25 @@ float Lane::GetCurrentPercentage()
 	return this->current_percentage;
 }
 
-
 void Lane::SetCurrentPercentage(float p)
 {
 	current_percentage = p;
 	if (current_percentage > 360) current_percentage = 0;
 	else if (current_percentage < 0) current_percentage = 360;
+}
+
+bool Lane::NextColourIsCurrent(Colour current_colour)
+{
+	Colour next_colour = colour_order.front();
+
+	int next_colour_values[] = { next_colour.r, next_colour.g, next_colour.b };
+	int current_colour_values[] = { current_colour.r, current_colour.g, current_colour.b };
+	int rgb_length = sizeof(next_colour_values) / sizeof(next_colour_values[0]);
+
+	for (int i = 0; i < rgb_length; i++)
+	{
+		if (next_colour_values[i] != current_colour_values[i]) return false;
+	}
+
+	return true;
 }
