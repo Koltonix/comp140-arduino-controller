@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
+#include <windows.h>
 
 #include "colour.h"
 #include "led.h"
@@ -47,6 +48,8 @@ void Start()
 	{
 		Colour front_colour = lane.colour_order.front();
 		cout << front_colour.r << ", " << front_colour.g << ", " << front_colour.b << endl;
+
+		Sleep(1000);
 
 		lane.RemoveNextColour();
 		cout << endl;
