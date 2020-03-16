@@ -1,5 +1,2 @@
-﻿  colour.cpp
-  rgb-controller-prototype.cpp
-  Generating Code...
-D:\Christopher Robertson\comp140-arduino-controller\rgb-controller-prototype\colour.cpp(49,11): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+﻿  rgb-controller-prototype.cpp
   rgb-controller-prototype.vcxproj -> D:\Christopher Robertson\comp140-arduino-controller\rgb-controller-prototype\x64\Debug\rgb-controller-prototype.exe

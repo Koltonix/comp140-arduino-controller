@@ -53,9 +53,6 @@ Colour Colour::HSVToRGB(double h, double s, double v)
 	p = 255 * v * (1.0 - s);
 	q = 255 * v * (1.0 - (s * ff));
 	t = 255 * v * (1.0 - (s * 1.0 - ff));
-	
-	v *= 255;
-	s *= 255;
 
 	switch (i) 
 	{
