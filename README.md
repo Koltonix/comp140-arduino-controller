@@ -23,3 +23,6 @@
 
 ## LCD Screen
 - [LCD Screen Tutorial](https://www.youtube.com/watch?v=dZZynJLmTn8)
+
+#### Fonts
+- [Retroid Font](https://www.dafont.com/retronoid.font)
