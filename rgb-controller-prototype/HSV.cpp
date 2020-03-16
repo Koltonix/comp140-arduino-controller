@@ -20,6 +20,23 @@ HSV HSV::RGBToHSV(int r, int g, int b)
 	max = max > _b ? max : _b;
 
 	double delta = max - min;
+	hsv.v = max;
+
+	if (delta < 0.00001)
+	{
+		hsv.s = 0;
+		hsv.h = 0;
+		return hsv;
+	}
+
+	if (max > 0.0) hsv.s = (delta / max);
+
+	else
+	{
+		hsv.s = 0;
+		hsv.h = NAN;
+		return hsv;
+	}
 
 	hsv.v = max;
 

@@ -4,6 +4,7 @@
 #include <windows.h>
 
 #include "colour.h"
+#include "HSV.h"
 #include "led.h"
 #include "lane.h"
 
@@ -29,10 +30,27 @@ void GetInput();
 
 void Start()
 {
-	Colour colour = Colour();
-	colour = colour.HSVToRGB(221.0, 0.49, 0.53);
+	Colour colour = Colour(255, 255, 255);
+	HSV hsv = HSV();
+
+	hsv = hsv.RGBToHSV(colour.r, colour.g, colour.b);
+
+	cout << hsv.h << ", " << hsv.s << ", " << hsv.v << endl;
+
+	colour = colour.HSVToRGB(hsv.h, hsv.s, hsv.v);
 
 	cout << colour.r << ", " << colour.g << ", " << colour.b << endl;
+
+	cout << endl;
+
+	hsv = hsv.RGBToHSV(colour.r, colour.g, colour.b);
+
+	cout << hsv.h << ", " << hsv.s << ", " << hsv.v << endl;
+
+	colour = colour.HSVToRGB(hsv.h, hsv.s, hsv.v);
+
+	cout << colour.r << ", " << colour.g << ", " << colour.b << endl;
+
 
 }
 

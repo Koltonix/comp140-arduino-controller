@@ -27,7 +27,7 @@ Colour::Colour(int r, int g, int b) : r(r), g(g), b(b)
 Colour Colour::HSVToRGB(double h, double s, double v)
 {
 	int i;
-
+	
 	double p;
 	double q;
 	double t;
@@ -37,6 +37,7 @@ Colour Colour::HSVToRGB(double h, double s, double v)
 
 	if (s <= 0.0)
 	{
+		v *= 255;
 		colour.r = int(v);
 		colour.g = int(v);
 		colour.b = int(v);
@@ -53,6 +54,8 @@ Colour Colour::HSVToRGB(double h, double s, double v)
 	p = 255 * v * (1.0 - s);
 	q = 255 * v * (1.0 - (s * ff));
 	t = 255 * v * (1.0 - (s * 1.0 - ff));
+
+	v *= 255;
 
 	switch (i) 
 	{
@@ -90,6 +93,5 @@ Colour Colour::HSVToRGB(double h, double s, double v)
 		break;
 	}
 
-	cout << colour.r << ", " << colour.g << ", " << colour.b << endl;
 	return colour;
 }
