@@ -47,12 +47,15 @@ Colour Colour::HSVToRGB(double h, double s, double v)
 	else h /= 60.0;
 
 	i = trunc(h);
-	cout << i << endl;
 	ff = h - i;
+
+	p = 255 * v * (1.0 - s);
+	p = 255 * v * (1.0 - s);
+	q = 255 * v * (1.0 - (s * ff));
+	t = 255 * v * (1.0 - (s * 1.0 - ff));
 	
-	p = v * (1.0 - s);
-	q = v * (1.0 - (s * ff));
-	t = v * (1.0 - (s * 1.0 - ff));
+	v *= 255;
+	s *= 255;
 
 	switch (i) 
 	{

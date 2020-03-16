@@ -30,7 +30,7 @@ void GetInput();
 void Start()
 {
 	Colour colour = Colour();
-	colour = colour.HSVToRGB(45, 1.0, 1.0);
+	colour = colour.HSVToRGB(45.0, 1.0, 1.0);
 
 	cout << colour.r << ", " << colour.g << ", " << colour.b << endl;
 
