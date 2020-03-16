@@ -1,6 +1,9 @@
 #include <iostream>
+#include <cmath>
 #include "colour.h"
 #include "hsv.h"
+
+using namespace std;
 
 Colour::Colour() : r(0), g(0), b(0) {}
 Colour::Colour(int r, int g, int b) : r(r), g(g), b(b)
@@ -20,13 +23,10 @@ Colour::Colour(int r, int g, int b) : r(r), g(g), b(b)
 }
 
 //Source: https://stackoverflow.com/questions/3018313/algorithm-to-convert-rgb-to-hsv-and-hsv-to-rgb-in-range-0-255-for-both
+//Source: https://www.programmingalgorithms.com/algorithm/hsv-to-rgb/
 Colour Colour::HSVToRGB(double h, double s, double v)
 {
-	double _h;
-	double _s;
-	double _v;
-
-	long i;
+	int i;
 
 	double p;
 	double q;
@@ -37,17 +37,17 @@ Colour Colour::HSVToRGB(double h, double s, double v)
 
 	if (s <= 0.0)
 	{
-		colour.r = v;
-		colour.g = v;
-		colour.b = v;
+		colour.r = int(v);
+		colour.g = int(v);
+		colour.b = int(v);
 		return colour;
 	}
 
-	_h = h;
-	if (_h >= 360) _h = 0.0;
-	_h /= 60.0;
+	if (h >= 360.0) h = 0.0;
+	else h /= 60.0;
 
-	i = long(_h);
+	i = trunc(h);
+	cout << i << endl;
 	ff = h - i;
 	
 	p = v * (1.0 - s);
@@ -57,42 +57,39 @@ Colour Colour::HSVToRGB(double h, double s, double v)
 	switch (i) 
 	{
 	case 0:
-		colour.r = v;
-		colour.g = t;
-		colour.b = p;
+		colour.r = int(v);
+		colour.g = int(t);
+		colour.b = int(p);
 		break;
-
 	case 1:
-		colour.r = q;
-		colour.g = v;
-		colour.b = p;
+		colour.r = int(q);
+		colour.g = int(v);
+		colour.b = int(p);
 		break;
-
 	case 2:
-		colour.r = p;
-		colour.g = v;
-		colour.b = t;
+		colour.r = int(p);
+		colour.g = int(v);
+		colour.b = int(t);
 		break;
 
 	case 3:
-		colour.r = p;
-		colour.g = q;
-		colour.b = v;
+		colour.r = int(p);
+		colour.g = int(q);
+		colour.b = int(v);
 		break;
-
 	case 4:
-		colour.r = t;
-		colour.g = p;
-		colour.b = v;
+		colour.r = int(t);
+		colour.g = int(p);
+		colour.b = int(v);
 		break;
-
 	case 5:
 	default:
-		colour.r = v;
-		colour.g = p;
-		colour.b = q;
+		colour.r = int(v);
+		colour.g = int(p);
+		colour.b = int(q);
 		break;
 	}
 
+	cout << colour.r << ", " << colour.g << ", " << colour.b << endl;
 	return colour;
 }

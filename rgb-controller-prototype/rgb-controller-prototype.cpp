@@ -29,31 +29,11 @@ void GetInput();
 
 void Start()
 {
-	for (int i = 0; i < 3; i++)
-	{
-		lane.colour_order.push(Colour(i, i, i));
-	}
+	Colour colour = Colour();
+	colour = colour.HSVToRGB(45, 1.0, 1.0);
 
-	cout << "Colours Added" << endl;
+	cout << colour.r << ", " << colour.g << ", " << colour.b << endl;
 
-	cout << lane.colour_order.size() << " long" << endl;
-
-
-	Colour colour = lane.GetColourAtIndex(0);
-	cout << colour.r << ", "<< colour.g << ", " << colour.b << endl;
-
-	cout << lane.GetColourAtAngle(360).r << endl;
-
-	for (int i = 0; i < 5; i++)
-	{
-		Colour front_colour = lane.colour_order.front();
-		cout << front_colour.r << ", " << front_colour.g << ", " << front_colour.b << endl;
-
-		Sleep(1000);
-
-		lane.RemoveNextColour();
-		cout << endl;
-	}
 }
 
 void Update()
