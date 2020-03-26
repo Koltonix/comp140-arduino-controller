@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef Lane_h
+#define Lane_h
+
 #include <queue>
 #include <vector>
 #include "colour.h"
@@ -26,6 +30,7 @@ public:
 	};
 
 	float interval_to_change_colour;
+	float current_percentage;
 
 	Lane(int index);
 
@@ -38,9 +43,11 @@ public:
 	float GetCurrentPercentage();
 	void SetCurrentPercentage(float p);
 
-private:
-	float current_percentage;
-
-	bool NextColourIsCurrent(Colour current_colour);
 	Colour GetRandomColourPreset();
+	bool NextColourIsCurrent(Colour current_colour);	
+	
+private:
+	
 };
+
+#endif

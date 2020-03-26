@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef Colour_h
+#define Colour_h
+
 class Colour
 {
 public:
@@ -12,3 +15,5 @@ public:
 
 	Colour HSVToRGB(double h, double s, double v);
 };
+
+#endif

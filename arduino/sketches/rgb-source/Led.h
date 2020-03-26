@@ -1,3 +1,8 @@
+#pragma once
+
+#ifndef Led_h
+#define Led_h
+
 #include "colour.h"
 
 class Led
@@ -8,3 +13,5 @@ public:
 
 	Led(Colour *colour, int display_position);
 };
+
+#endif

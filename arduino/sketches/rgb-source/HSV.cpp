@@ -1,5 +1,4 @@
 #include "hsv.h"
-#include <iostream>
 
 HSV::HSV() : h(0), s(0), v(0) {}
 HSV::HSV(double h, double s, double v) : h(h), s(s), v(v) {}

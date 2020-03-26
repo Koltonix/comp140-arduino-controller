@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef HSV_h
+#define HSV_h
+
 #include "colour.h"
 
 class HSV
@@ -12,3 +16,5 @@ public:
 	HSV(double h, double s, double v);
 	HSV RGBToHSV(int r, int g, int b);
 };
+
+#endif

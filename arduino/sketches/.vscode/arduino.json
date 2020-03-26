@@ -1,5 +1,5 @@
 {
+    "sketch": "rgb-controller\\rgb-controller.ino",
     "board": "arduino:avr:uno",
-    "port": "COM3",
-    "sketch": "rgb_led\\rgb_led.ino"
+    "port": "COM3"
 }
