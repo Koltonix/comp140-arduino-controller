@@ -20,16 +20,6 @@ Lane::Lane(int laneIndex)
 	this->available_colours.push_back(Colour(255, 0, 192));
 	this->available_colours.push_back(Colour(255, 255, 0));
 
-	
-	// this->available_colours[0] = Colour(255, 0, 0);
-	// this->available_colours[1] = Colour(255, 192, 0);
-	// this->available_colours[2] = Colour(128, 255, 0);
-	// this->available_colours[3] = Colour(0, 255, 255);
-	// this->available_colours[4] = Colour(0, 64, 255);
-	// this->available_colours[5] = Colour(128, 0, 255);
-	// this->available_colours[6] = Colour(255, 0, 192);
-	// this->available_colours[7] = Colour(255, 255, 0);
-
 	this->selected_colour = Colour(0, 0, 0);
 
 	this->interval_to_change_colour = 360 / available_colours.size() - 1;
@@ -70,8 +60,8 @@ float Lane::GetCurrentPercentage()
 void Lane::SetCurrentPercentage(float p)
 {
 	current_percentage = p;
-	if (current_percentage > 360) current_percentage = 0;
-	else if (current_percentage < 0) current_percentage = 360;
+	if (current_percentage > 360) current_percentage = current_percentage - 360;
+	else if (current_percentage < 0) current_percentage = 360 + current_percentage;
 }
 
 bool Lane::NextColourIsCurrent(Colour current_colour)
