@@ -6,11 +6,12 @@
 char input;
 char positive_input = 'e';
 char negative_input = 'q';
+char submit_input = 'w';
 
 int initial_lane_size = 3;
 Lane first_lane = Lane(0);
 float first_rotary_encoder = 0.0f;
-float turn_multiplier = 2.0f;
+float turn_multiplier = 45.0f;
 
 
 void setup() 
@@ -24,7 +25,11 @@ void loop()
   input = Serial.read();
   if (input == positive_input) first_lane.SetCurrentPercentage(first_lane.current_percentage + turn_multiplier);
   if (input == negative_input) first_lane.SetCurrentPercentage(first_lane.current_percentage - turn_multiplier);
-  Serial.println(first_lane.current_percentage);
+
+  if (input == submit_input && first_lane.NextColourIsCurrent(first_lane.selected_colour)) Serial.println("CORRECT");
+
+  Serial.println(GetStringFromColour(first_lane.colour_order.front()));
+  Serial.println(GetStringFromColour(first_lane.selected_colour));
 }
 
 void LaneSetup()
@@ -40,4 +45,10 @@ void LaneSetup()
     //Delayed since time is the key randomiser
     delay(10);
   }
+}
+
+String GetStringFromColour(Colour colour)
+{
+  String current_colour = String(colour.r) + ", " + String(colour.g) + ", " + String(colour.b);
+  return current_colour;
 }
