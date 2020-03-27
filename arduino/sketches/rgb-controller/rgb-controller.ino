@@ -1,4 +1,7 @@
 #include "Colour.h"
+#include "Lane.h"
+#include "HSV.h"
+#include "Led.h"
 
 void setup() 
 {

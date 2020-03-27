@@ -1,5 +1,5 @@
 #include "math.h"
-#include <ctime>
+#include "time.h"
 
 #include "lane.h"
 #include "colour.h"
@@ -7,7 +7,16 @@
 Lane::Lane(int laneIndex)
 {
 	this->lane_index = laneIndex;
-	this->colour_order = queue<Colour>();
+	
+	this->colour_order = QList<Colour>();
+	this->colour_order.push_front(Colour(255, 0, 0));
+	this->colour_order.push_front(Colour(255, 192, 0));
+	this->colour_order.push_front(Colour(128, 255, 0));
+	this->colour_order.push_front(Colour(0, 255, 255));
+	this->colour_order.push_front(Colour(0, 64, 255));
+	this->colour_order.push_front(Colour(128, 0, 255));
+	this->colour_order.push_front(Colour(255, 0, 192));
+	this->colour_order.push_front(Colour(255, 255, 0));
 
 	this->selected_colour = Colour(0, 0, 0);
 
@@ -16,33 +25,18 @@ Lane::Lane(int laneIndex)
 
 void Lane::AddNewColour(Colour colour)
 {
-	colour_order.push(colour);
+	colour_order.push_front(colour);
 }
 
 void Lane::RemoveNextColour()
 {
-	this->colour_order.pop();
-	this->colour_order.push(GetRandomColourPreset());
+	this->colour_order.pop_front();
+	this->colour_order.push_front(GetRandomColourPreset());
 }
 
 Colour Lane::GetColourAtIndex(int index) 
 {
-	queue<Colour> _colourOrder = colour_order;
-
-	if (_colourOrder.size() > index)
-	{
-		for (int i = 0; i < _colourOrder.size(); i++)
-		{
-			if (i == index)
-			{
-				return _colourOrder.front();
-			}
-
-			_colourOrder.pop();
-		}
-	}
-	
-	return Colour(255, 255, 255);
+	return this->colour_order.get(0);;
 }
 
 Colour Lane::GetColourAtAngle(float angle)
@@ -90,7 +84,6 @@ Colour Lane::GetRandomColourPreset()
 
 	srand(time(NULL));
 	int random_value = rand() % available_colours_length;
-	cout << random_value << " random value" << endl;
 
 	return available_colours[random_value];
 }	

@@ -2,7 +2,7 @@
 #ifndef Lane_h
 #define Lane_h
 
-#include <ArduinoSTL.h>
+#include "QList.h"
 // #include <queue>
 // #include <vector>
 #include "colour.h"
@@ -14,20 +14,10 @@ class Lane
 public:
 	int lane_index;
 
-	queue <Colour> colour_order;
+	QList<Colour> colour_order;
 
 	Colour selected_colour;
-	vector<Colour> available_colours
-	{
-		Colour(255, 0, 0),
-		Colour(255, 192, 0),
-		Colour(128, 255, 0),
-		Colour(0, 255, 255),
-		Colour(0, 64, 255),
-		Colour(128, 0, 255),
-		Colour(255, 0, 192),
-		Colour(255, 255, 0)
-	};
+	QList<Colour> available_colours;
 
 	float interval_to_change_colour;
 	float current_percentage;
