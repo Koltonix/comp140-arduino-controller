@@ -20,9 +20,8 @@ Lane::Lane(int laneIndex)
 	this->available_colours.push_back(Colour(255, 0, 192));
 	this->available_colours.push_back(Colour(255, 255, 0));
 
-	this->selected_colour = Colour(0, 0, 0);
-
-	this->interval_to_change_colour = 360 / available_colours.size() - 1;
+	this->interval_to_change_colour = 360 / available_colours.size();
+	SetCurrentPercentage(current_percentage);
 }
 
 void Lane::AddNewColour(Colour colour)
@@ -38,7 +37,7 @@ void Lane::RemoveNextColour(int random_modifier)
 
 Colour Lane::GetColourAtIndex(int index) 
 {
-	return this->colour_order.get(0);;
+	return this->colour_order.get(0);
 }
 
 Colour Lane::GetColourAtAngle(float angle)
@@ -61,7 +60,7 @@ void Lane::SetCurrentPercentage(float p)
 {
 	current_percentage = p;
 	if (current_percentage > 360) current_percentage = current_percentage - 360;
-	else if (current_percentage < 0) current_percentage = 360 + current_percentage;
+	else if (current_percentage <= 0) current_percentage = 360 + current_percentage;
 
 	this->selected_colour = GetColourAtAngle(current_percentage);
 }

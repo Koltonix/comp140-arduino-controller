@@ -3,6 +3,7 @@
         {
             "name": "Win32",
             "includePath": [
+                "C:\\Users\\Christopher\\Documents\\Arduino\\libraries\\Adafruit_NeoPixel",
                 "C:\\Users\\Christopher\\Documents\\Arduino\\libraries\\QList\\src",
                 "C:\\Users\\Christopher\\Documents\\Arduino\\libraries\\ArduinoSTL\\src",
                 "C:\\Users\\Christopher\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\**",

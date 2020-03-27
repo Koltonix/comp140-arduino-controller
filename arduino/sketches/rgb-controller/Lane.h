@@ -18,7 +18,7 @@ public:
 	QList<Colour> available_colours;
 
 	float interval_to_change_colour;
-	float current_percentage;
+	float current_percentage = 0.0f;
 
 	Lane(int index);
 
