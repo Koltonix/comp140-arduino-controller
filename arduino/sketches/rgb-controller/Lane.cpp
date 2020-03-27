@@ -9,14 +9,26 @@ Lane::Lane(int laneIndex)
 	this->lane_index = laneIndex;
 	
 	this->colour_order = QList<Colour>();
-	this->colour_order.push_front(Colour(255, 0, 0));
-	this->colour_order.push_front(Colour(255, 192, 0));
-	this->colour_order.push_front(Colour(128, 255, 0));
-	this->colour_order.push_front(Colour(0, 255, 255));
-	this->colour_order.push_front(Colour(0, 64, 255));
-	this->colour_order.push_front(Colour(128, 0, 255));
-	this->colour_order.push_front(Colour(255, 0, 192));
-	this->colour_order.push_front(Colour(255, 255, 0));
+	this->available_colours = QList<Colour>();
+
+	this->available_colours.push_back(Colour(255, 0, 0));
+	this->available_colours.push_back(Colour(255, 192, 0));
+	this->available_colours.push_back(Colour(128, 255, 0));
+	this->available_colours.push_back(Colour(0, 255, 255));
+	this->available_colours.push_back(Colour(0, 64, 255));
+	this->available_colours.push_back(Colour(128, 0, 255));
+	this->available_colours.push_back(Colour(255, 0, 192));
+	this->available_colours.push_back(Colour(255, 255, 0));
+
+	
+	// this->available_colours[0] = Colour(255, 0, 0);
+	// this->available_colours[1] = Colour(255, 192, 0);
+	// this->available_colours[2] = Colour(128, 255, 0);
+	// this->available_colours[3] = Colour(0, 255, 255);
+	// this->available_colours[4] = Colour(0, 64, 255);
+	// this->available_colours[5] = Colour(128, 0, 255);
+	// this->available_colours[6] = Colour(255, 0, 192);
+	// this->available_colours[7] = Colour(255, 255, 0);
 
 	this->selected_colour = Colour(0, 0, 0);
 
@@ -28,10 +40,10 @@ void Lane::AddNewColour(Colour colour)
 	colour_order.push_front(colour);
 }
 
-void Lane::RemoveNextColour()
+void Lane::RemoveNextColour(int random_modifier)
 {
 	this->colour_order.pop_front();
-	this->colour_order.push_front(GetRandomColourPreset());
+	this->colour_order.push_front(GetRandomColourPreset(random_modifier));
 }
 
 Colour Lane::GetColourAtIndex(int index) 
@@ -78,12 +90,12 @@ bool Lane::NextColourIsCurrent(Colour current_colour)
 	return true;
 }
 
-Colour Lane::GetRandomColourPreset()
+Colour Lane::GetRandomColourPreset(int random_modifier)
 {	
 	int available_colours_length = available_colours.size() - 1;
 
-	srand(time(NULL));
+	srand(random_modifier);
 	int random_value = rand() % available_colours_length;
-
+	
 	return available_colours[random_value];
 }	

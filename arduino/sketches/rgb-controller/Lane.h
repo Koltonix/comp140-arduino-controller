@@ -3,8 +3,6 @@
 #define Lane_h
 
 #include "QList.h"
-// #include <queue>
-// #include <vector>
 #include "colour.h"
 
 using namespace std;
@@ -25,7 +23,7 @@ public:
 	Lane(int index);
 
 	void AddNewColour(Colour colour);
-	void RemoveNextColour();
+	void RemoveNextColour(int random_modifier);
 
 	Colour GetColourAtIndex(int index);
 	Colour GetColourAtAngle(float angle);
@@ -33,11 +31,8 @@ public:
 	float GetCurrentPercentage();
 	void SetCurrentPercentage(float p);
 
-	Colour GetRandomColourPreset();
+	Colour GetRandomColourPreset(int random_modifier);
 	bool NextColourIsCurrent(Colour current_colour);	
-	
-private:
-	
 };
 
 #endif

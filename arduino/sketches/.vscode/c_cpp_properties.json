@@ -7,7 +7,7 @@
                 "C:\\Users\\Christopher\\Documents\\Arduino\\libraries\\ArduinoSTL\\src",
                 "C:\\Users\\Christopher\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\**",
                 "C:\\Users\\Christopher\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.2\\**",
-                "D:\\University\\1st Year\\COMP140\\comp140-arduino-controller\\arduino\\sketches\\rgb-source"
+                "D:\\University\\1st Year\\COMP140\\comp140-arduino-controller\\arduino\\sketches"
             ],
             "forcedInclude": [
                 "C:\\Users\\Christopher\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.2\\cores\\arduino\\Arduino.h"
