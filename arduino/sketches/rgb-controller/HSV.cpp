@@ -33,7 +33,7 @@ HSV HSV::RGBToHSV(int r, int g, int b)
 	else
 	{
 		hsv.s = 0;
-		hsv.h = NAN;
+		hsv.h = 0;
 		return hsv;
 	}
 

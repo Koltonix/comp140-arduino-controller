@@ -1,11 +1,9 @@
-#include <Colour.h>
-#include <HSV.h>
-#include <Lane.h>
-#include <Led.h>
+#include "Colour.h"
 
 void setup() 
 {
-  Serial.begin(9600);
+  
+  Serial.begin(115200);
 }
 
 void loop() 

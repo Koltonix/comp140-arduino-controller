@@ -1,12 +1,8 @@
-#include <queue>
-#include <iostream>
-#include <cmath>
+#include "math.h"
 #include <ctime>
 
 #include "lane.h"
 #include "colour.h"
-
-using namespace std;
 
 Lane::Lane(int laneIndex)
 {

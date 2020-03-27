@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef HSV_h
 #define HSV_h
 
