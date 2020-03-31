@@ -7,59 +7,74 @@
 #include "Led.h"
 
 //Game Conditions
-bool canInput = true;
-
-//Rotary Encoder
-#define redRotaryEncoderOne A1
-#define greenRotaryEncoderOne A2
-#define blueRotaryEncoderOne A3
-
-#define rotaryB 2
-#define rotaryA 3
-#define encoderButton 4
-int encoderValue = 0;
-
-//Keyboard Input
-char input;
-char positive_input = 'e';
-char negative_input = 'q';
-char submit_input = 'w';
-
-//Lane 1
+bool can_input = true;
 int initial_lane_size = 3;
-Lane first_lane = Lane(0);
+float led_brightness = 0.1f;
 float first_rotary_encoder = 0.0f;
 float turn_multiplier = 45.0f;
+int num_leds = 8;
+int score = 0;
+
+//Rotary Encoder
+#define red_encoder_one A0
+#define green_encoder_one A1
+#define blue_encoder_one A2
+
+#define red_encoder_two A3
+#define green_encoder_two A4
+#define blue_encoder_two A5
+
+#define rotary_b_one 2
+#define rotary_a_one 3
+#define encoder_button_one 4
+
+#define rotary_b_two 8
+#define rotary_a_two 9
+#define encoder_button_two 10
+
+int encoder_value_one = 0;
+int encoder_value_two = 0;
+
+//Lane 1
+Lane first_lane = Lane(0);
+Lane second_lane = Lane(1);
 
 //Lane 1 LEDS
-int num_leds = 8;
-int led_pin = 7;
-float led_brightness = 0.1f;
-Adafruit_NeoPixel first_pixels = Adafruit_NeoPixel(num_leds, led_pin, NEO_GRB + NEO_KHZ800);
+int led_pin_one = 7;
+int led_pin_two = 12;
 
-int score = 0;
+Adafruit_NeoPixel first_pixels = Adafruit_NeoPixel(num_leds, led_pin_one, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel second_pixels = Adafruit_NeoPixel(num_leds, led_pin_two, NEO_GRB + NEO_KHZ800);
+
 
 void setup() 
 {
   Serial.begin(115200);
+
   LaneSetup(first_lane);
+  LaneSetup(second_lane);
+
   RotaryEncoderSetup();
 
   first_pixels.begin();
+  second_pixels.begin();
 }
 
 void loop() 
 {
-  if (canInput)
+  if (can_input)
   {
     UpdateLEDS(first_lane, first_pixels);
+    UpdateLEDS(second_lane, second_pixels);
     UpdateRotaryLEDs(); 
 
-    input = Serial.read();
-    if (encoderValue > 0) first_lane.SetCurrentPercentage(first_lane.current_percentage + turn_multiplier);
-    if (encoderValue < 0) first_lane.SetCurrentPercentage(first_lane.current_percentage - turn_multiplier);
+    if (encoder_value_one > 0) first_lane.SetCurrentPercentage(first_lane.current_percentage + turn_multiplier);
+    if (encoder_value_one < 0) first_lane.SetCurrentPercentage(first_lane.current_percentage - turn_multiplier);
 
-    if (digitalRead(encoderButton) > 0)
+    if (encoder_value_two > 0) second_lane.SetCurrentPercentage(second_lane.current_percentage + turn_multiplier);
+    if (encoder_value_two < 0) second_lane.SetCurrentPercentage(second_lane.current_percentage - turn_multiplier);
+
+    if (digitalRead(encoder_button_one) > 0)
     {
       if (first_lane.NextColourIsCurrent(first_lane.selected_colour))
       {
@@ -78,7 +93,8 @@ void loop()
       }
     }
 
-    encoderValue = 0;
+    encoder_value_one = 0;
+    encoder_value_two = 0;
     Serial.println(first_lane.current_percentage);
   }
   
@@ -96,22 +112,38 @@ void LaneSetup(Lane& lane)
 
 void RotaryEncoderSetup()
 { 
-  pinMode(rotaryA, INPUT_PULLUP);
-  pinMode(rotaryB, INPUT_PULLUP);
-  pinMode(encoderButton, OUTPUT);
+  pinMode(rotary_a_one, INPUT_PULLUP);
+  pinMode(rotary_b_one, INPUT_PULLUP);
+  pinMode(encoder_button_one, OUTPUT);
 
-  pinMode(redRotaryEncoderOne, OUTPUT);
-  pinMode(greenRotaryEncoderOne, OUTPUT);
-  pinMode(blueRotaryEncoderOne, OUTPUT);
+  pinMode(rotary_a_two, INPUT_PULLUP);
+  pinMode(rotary_b_two, INPUT_PULLUP);
+  pinMode(encoder_button_two, OUTPUT);
 
-  attachInterrupt(0, OnEncoderRotate, CHANGE);
+  pinMode(red_encoder_one, OUTPUT);
+  pinMode(green_encoder_one, OUTPUT);
+  pinMode(blue_encoder_one, OUTPUT);
+
+  pinMode(red_encoder_two, OUTPUT);
+  pinMode(green_encoder_two, OUTPUT);
+  pinMode(blue_encoder_two, OUTPUT);
+
+  attachInterrupt(0, OnFirstEncoderRotate, CHANGE);
+  attachInterrupt(0, OnSecondEncoderRotate, CHANGE);
 }
 
-void OnEncoderRotate()
+void OnFirstEncoderRotate()
 {
-  if (digitalRead(rotaryA) == digitalRead(rotaryB)) encoderValue++;
-  else encoderValue--;
-  encoderValue = constrain(encoderValue, -1, 1);
+  if (digitalRead(rotary_a_one) == digitalRead(rotary_b_one)) encoder_value_one++;
+  else encoder_value_one--;
+  encoder_value_one = constrain(encoder_value_one, -1, 1);
+}
+
+void OnSecondEncoderRotate()
+{
+  if (digitalRead(rotary_a_two) == digitalRead(rotary_b_two)) encoder_value_two++;
+  else encoder_value_two--;
+  encoder_value_two = constrain(encoder_value_two, -1, 1);
 }
 
 void UpdateLEDS(Lane& lane, Adafruit_NeoPixel& pixels)
@@ -140,14 +172,14 @@ void UpdateRotaryLEDs()
   double g = double(first_lane.selected_colour.g) / double(255);
   double b = double(first_lane.selected_colour.b) / double(255);
 
-  digitalWrite(redRotaryEncoderOne, 1.0 - r);
-  digitalWrite(greenRotaryEncoderOne, 1.0 - g);
-  digitalWrite(blueRotaryEncoderOne, 1.0 - b);
+  digitalWrite(red_encoder_one, 1.0 - r);
+  digitalWrite(green_encoder_one, 1.0 - g);
+  digitalWrite(blue_encoder_one, 1.0 - b);
 }
 
 void PlayLoseAnimation(Adafruit_NeoPixel& pixels)
 {
-  canInput = false;
+  can_input = false;
 
   for (int j = 0; j < 3; j++)
   {
@@ -169,7 +201,7 @@ void PlayLoseAnimation(Adafruit_NeoPixel& pixels)
   }
 
   setup();
-  canInput = true;
+  can_input = true;
 }
 
 void GameOver()
