@@ -86,6 +86,7 @@ void loop()
 
     Serial.println(first_lane.current_percentage);
     Serial.println();
+    Serial.println(String(first_lane.selected_colour.r) + ", " + String(first_lane.selected_colour.g) + ", " + String(first_lane.selected_colour.b));
     first_lane.encoder_value = 0;
   }
 }
@@ -152,8 +153,6 @@ void UpdateRotaryLEDs()
   double r = double(first_lane.selected_colour.r) / double(255);
   double g = double(first_lane.selected_colour.g) / double(255);
   double b = double(first_lane.selected_colour.b) / double(255);
-
-  Serial.println(String(first_lane.selected_colour.r) + ", " + String(first_lane.selected_colour.g) + ", " + String(first_lane.selected_colour.b));
 
   digitalWrite(first_lane.red_encoder, 1.0 - r);
   digitalWrite(first_lane.green_encoder, 1.0 - g);

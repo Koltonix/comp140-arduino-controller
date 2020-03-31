@@ -22,8 +22,6 @@ Lane::Lane(int laneIndex, int rotary_a, int rotary_b, int button, int red, int g
 	this->led_amount = led_amount;
 	this->led_pin = led_pin;
 
-	this->pixels = Adafruit_NeoPixel(led_amount, led_pin, NEO_GRB + NEO_KHZ800);;
-
 	this->colour_order = QList<Colour>();
 	this->available_colours = QList<Colour>();
 
@@ -36,6 +34,8 @@ Lane::Lane(int laneIndex, int rotary_a, int rotary_b, int button, int red, int g
 
 	interval_to_change_colour = 360 / available_colours.size() - 1;
 	SetCurrentPercentage(current_percentage);
+
+	this->pixels = Adafruit_NeoPixel(led_amount, led_pin, NEO_GRB + NEO_KHZ800);
 }
 
 void Lane::AddNewColour(Colour colour)
