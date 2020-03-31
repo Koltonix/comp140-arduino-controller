@@ -83,7 +83,7 @@ void loop()
     //int btn = ;
     //Serial.println(btn);
     //lastEncoderValue = encoderValue;
-    //Serial.println(first_lane.current_percentage);
+    Serial.println(first_lane.current_percentage);
   }
   
 }
@@ -119,16 +119,18 @@ void OnEncoderRotate()
 }
 
 void UpdateLEDS()
-{
-  Colour& current_colour = first_lane.selected_colour;
-  Colour next_colour = first_lane.GetColourAtIndex(0);
+{  
+  Colour first = first_lane.GetColourAtIndex(0);
+  Colour second = first_lane.GetColourAtIndex(1);
+  Colour third = first_lane.GetColourAtIndex(2);
 
   for (int i = 1; i <= num_leds; i++)
   {
     if (i % 3 != 0 || i == 0) 
     {
-      if (i < 4) first_pixels.setPixelColor(i - 1, first_pixels.Color(round(current_colour.r * led_brightness), round(current_colour.g * led_brightness), round(current_colour.b * led_brightness)));
-      else first_pixels.setPixelColor(i - 1, first_pixels.Color(round(next_colour.r * led_brightness), round(next_colour.g * led_brightness), round(next_colour.b * led_brightness)));
+      if (i > 0 && i < 3) first_pixels.setPixelColor(i - 1, first_pixels.Color(round(third.r * led_brightness), round(third.g * led_brightness), round(third.b * led_brightness)));
+      else if (i > 3 && i < 6) first_pixels.setPixelColor(i - 1, first_pixels.Color(round(second.r * led_brightness), round(second.g * led_brightness), round(second.b * led_brightness)));
+      else if (i > 6) first_pixels.setPixelColor(i - 1, first_pixels.Color(round(first.r * led_brightness), round(first.g * led_brightness), round(first.b * led_brightness)));
     }
   }
 
@@ -142,10 +144,6 @@ void UpdateRotaryLEDs()
   double g = double(first_lane.selected_colour.g) / double(255);
   double b = double(first_lane.selected_colour.b) / double(255);
 
-  Serial.print(String(r) + ", ");
-  Serial.print(String(g) + ", ");
-  Serial.println(b);
-
   digitalWrite(redRotaryEncoder, 1.0 - r);
   digitalWrite(greenRotaryEncoder, 1.0 - g);
   digitalWrite(blueRotaryEncoder, 1.0 - b);
@@ -157,7 +155,7 @@ void PlayLoseAnimation()
 
   for (int j = 0; j < 3; j++)
   {
-    for (int i = 0; i < num_leds; i+=2)
+    for (int i = 0; i < num_leds; i++)
     {
       first_pixels.setPixelColor(i, first_pixels.Color(255 * led_brightness, 0, 0));
     }
@@ -165,7 +163,7 @@ void PlayLoseAnimation()
     first_pixels.show();
     delay(500);
 
-    for (int i = 0; i < num_leds; i+=2)
+    for (int i = 0; i < num_leds; i++)
     {
       first_pixels.setPixelColor(i, first_pixels.Color(0, 0, 0));
     }
