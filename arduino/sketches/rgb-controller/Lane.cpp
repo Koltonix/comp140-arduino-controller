@@ -11,14 +11,14 @@ Lane::Lane(int laneIndex)
 	this->colour_order = QList<Colour>();
 	this->available_colours = QList<Colour>();
 
-	this->available_colours.push_back(Colour(255, 0, 0));
-	this->available_colours.push_back(Colour(255, 192, 0));
-	this->available_colours.push_back(Colour(128, 255, 0));
-	this->available_colours.push_back(Colour(0, 255, 255));
-	this->available_colours.push_back(Colour(0, 64, 255));
-	this->available_colours.push_back(Colour(128, 0, 255));
-	this->available_colours.push_back(Colour(255, 0, 192));
-	this->available_colours.push_back(Colour(255, 255, 0));
+	this->available_colours.push_back(Colour(255, 0, 0)); //Red
+	this->available_colours.push_back(Colour(255, 192, 0)); //Orange
+	this->available_colours.push_back(Colour(128, 255, 0)); //Green
+	this->available_colours.push_back(Colour(0, 255, 255)); //Cyan
+	this->available_colours.push_back(Colour(0, 64, 255)); //Blue
+	this->available_colours.push_back(Colour(128, 0, 255)); //Purple
+	this->available_colours.push_back(Colour(255, 0, 192)); //Magenta
+	this->available_colours.push_back(Colour(255, 255, 0)); //Yellow
 
 	this->interval_to_change_colour = 360 / available_colours.size();
 	SetCurrentPercentage(current_percentage);
