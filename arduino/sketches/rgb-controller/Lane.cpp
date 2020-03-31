@@ -1,13 +1,29 @@
+#include "Arduino.h"
+#include "Adafruit_NeoPixel.h"
 #include "math.h"
 #include "time.h"
 
 #include "lane.h"
 #include "colour.h"
 
-Lane::Lane(int laneIndex)
+Lane::Lane(int laneIndex, int rotary_a, int rotary_b, int button, int red, int green, int blue, int led_amount, int led_pin)
 {
 	this->lane_index = laneIndex;
+	this->encoder_value = 0;
+
+	this->rotary_a = rotary_a;
+	this->rotary_b = rotary_b;
+	this->button = button;
 	
+	this->red_encoder = red;
+	this->green_encoder = green;
+	this->blue_encoder = blue;
+	
+	this->led_amount = led_amount;
+	this->led_pin = led_pin;
+
+	this->pixels = Adafruit_NeoPixel(led_amount, led_pin, NEO_GRB + NEO_KHZ800);;
+
 	this->colour_order = QList<Colour>();
 	this->available_colours = QList<Colour>();
 
@@ -18,7 +34,7 @@ Lane::Lane(int laneIndex)
 	this->available_colours.push_back(Colour(0, 255, 255)); //Cyan
 	this->available_colours.push_back(Colour(255, 0, 255)); //Magenta
 
-	this->interval_to_change_colour = 360 / available_colours.size();
+	interval_to_change_colour = 360 / available_colours.size() - 1;
 	SetCurrentPercentage(current_percentage);
 }
 
@@ -42,10 +58,7 @@ Colour Lane::GetColourAtAngle(float angle)
 {
 	if (angle > 360 || angle < 0) return Colour(0, 0, 0);
 
-	int roundedToInterval = (angle + interval_to_change_colour / 2);
-	roundedToInterval -= roundedToInterval % int(round(interval_to_change_colour));
-	int colourIndex = (round(roundedToInterval) / 360) * available_colours.size() - 1;
-	
+	int colourIndex = round(angle / 360.0 * available_colours.size() - 1);
 	return available_colours[colourIndex];
 }
 

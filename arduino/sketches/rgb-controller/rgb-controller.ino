@@ -11,70 +11,61 @@ bool can_input = true;
 int initial_lane_size = 3;
 float led_brightness = 0.1f;
 float first_rotary_encoder = 0.0f;
-float turn_multiplier = 45.0f;
 int num_leds = 8;
 int score = 0;
 
 //Rotary Encoder
-#define red_encoder_one A0
-#define green_encoder_one A1
-#define blue_encoder_one A2
+int red_encoder_one = A0;
+int green_encoder_one = A1;
+int blue_encoder_one = A2;
 
-#define red_encoder_two A3
-#define green_encoder_two A4
-#define blue_encoder_two A5
+int red_encoder_two = A3;
+int green_encoder_two = A4;
+int blue_encoder_two = A5;
 
-#define rotary_b_one 2
-#define rotary_a_one 3
-#define encoder_button_one 4
+int rotary_b_one = 2;
+int rotary_a_one = 3;
+int encoder_button_one = 4;
 
-#define rotary_b_two 8
-#define rotary_a_two 9
-#define encoder_button_two 10
-
-int encoder_value_one = 0;
-int encoder_value_two = 0;
-
-//Lane 1
-Lane first_lane = Lane(0);
-Lane second_lane = Lane(1);
+int rotary_b_two = 8;
+int rotary_a_two = 9;
+int encoder_button_two = 10;
 
 //Lane 1 LEDS
 int led_pin_one = 7;
 int led_pin_two = 12;
 
-Adafruit_NeoPixel first_pixels = Adafruit_NeoPixel(num_leds, led_pin_one, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel second_pixels = Adafruit_NeoPixel(num_leds, led_pin_two, NEO_GRB + NEO_KHZ800);
-
+//Lane 1
+Lane first_lane = Lane(0, rotary_a_one, rotary_b_one, encoder_button_one, red_encoder_one, green_encoder_one, blue_encoder_one, num_leds, led_pin_one);
+Lane second_lane = Lane(1, rotary_a_two, rotary_b_two, encoder_button_two, red_encoder_two, green_encoder_two, blue_encoder_two, num_leds, led_pin_two);
 
 void setup() 
 {
   Serial.begin(115200);
 
-  LaneSetup(first_lane);
-  LaneSetup(second_lane);
+  LaneSetup();
+  //LaneSetup(second_lane);
 
   RotaryEncoderSetup();
-
-  first_pixels.begin();
-  second_pixels.begin();
+  //RotaryEncoderSetup(second_lane);
 }
 
 void loop() 
 {
   if (can_input)
   {
-    UpdateLEDS(first_lane, first_pixels);
-    UpdateLEDS(second_lane, second_pixels);
+    UpdateLEDS();
+    //UpdateLEDS(second_lane, second_pixels);
+    
     UpdateRotaryLEDs(); 
+    //UpdateRotaryLEDs(second_lane);
 
-    if (encoder_value_one > 0) first_lane.SetCurrentPercentage(first_lane.current_percentage + turn_multiplier);
-    if (encoder_value_one < 0) first_lane.SetCurrentPercentage(first_lane.current_percentage - turn_multiplier);
+    first_lane.SetCurrentPercentage(first_lane.current_percentage + (first_lane.interval_to_change_colour * float(first_lane.encoder_value)));
 
-    if (encoder_value_two > 0) second_lane.SetCurrentPercentage(second_lane.current_percentage + turn_multiplier);
-    if (encoder_value_two < 0) second_lane.SetCurrentPercentage(second_lane.current_percentage - turn_multiplier);
+    //if (second_lane.encoder_value > 0) second_lane.SetCurrentPercentage(second_lane.current_percentage + turn_multiplier);
+    //if (second_lane.encoder_value < 0) second_lane.SetCurrentPercentage(second_lane.current_percentage - turn_multiplier);
 
-    if (digitalRead(encoder_button_one) > 0)
+    if (digitalRead(first_lane.button) > 0)
     {
       if (first_lane.NextColourIsCurrent(first_lane.selected_colour))
       {
@@ -88,23 +79,24 @@ void loop()
         Serial.println("INCORRECT"); 
         score--;
         
-        PlayLoseAnimation(first_pixels);
+        PlayLoseAnimation();
         GameOver();
       }
     }
 
-    encoder_value_one = 0;
-    encoder_value_two = 0;
     Serial.println(first_lane.current_percentage);
+    Serial.println();
+    first_lane.encoder_value = 0;
   }
-  
 }
 
-void LaneSetup(Lane& lane)
+void LaneSetup()
 {
+  first_lane.pixels.begin();
+
   for (int i = 0; i < initial_lane_size; i++)
   {
-    lane.AddNewColour(first_lane.GetRandomColourPreset(millis()));
+    first_lane.AddNewColour(first_lane.GetRandomColourPreset(millis()));
     //Delayed since time is the key randomiser
     delay(100);
   }
@@ -112,57 +104,46 @@ void LaneSetup(Lane& lane)
 
 void RotaryEncoderSetup()
 { 
-  pinMode(rotary_a_one, INPUT_PULLUP);
-  pinMode(rotary_b_one, INPUT_PULLUP);
-  pinMode(encoder_button_one, OUTPUT);
+  pinMode(first_lane.rotary_a, INPUT_PULLUP);
+  pinMode(first_lane.rotary_b, INPUT_PULLUP);
+  pinMode(first_lane.button, OUTPUT);
 
-  pinMode(rotary_a_two, INPUT_PULLUP);
-  pinMode(rotary_b_two, INPUT_PULLUP);
-  pinMode(encoder_button_two, OUTPUT);
+  pinMode(first_lane.red_encoder, OUTPUT);
+  pinMode(first_lane.green_encoder, OUTPUT);
+  pinMode(first_lane.blue_encoder, OUTPUT);
 
-  pinMode(red_encoder_one, OUTPUT);
-  pinMode(green_encoder_one, OUTPUT);
-  pinMode(blue_encoder_one, OUTPUT);
-
-  pinMode(red_encoder_two, OUTPUT);
-  pinMode(green_encoder_two, OUTPUT);
-  pinMode(blue_encoder_two, OUTPUT);
-
-  attachInterrupt(0, OnFirstEncoderRotate, CHANGE);
-  attachInterrupt(0, OnSecondEncoderRotate, CHANGE);
+  attachInterrupt(0, OnEncoderRotate, CHANGE);
 }
 
-void OnFirstEncoderRotate()
+void OnEncoderRotate()
 {
-  if (digitalRead(rotary_a_one) == digitalRead(rotary_b_one)) encoder_value_one++;
-  else encoder_value_one--;
-  encoder_value_one = constrain(encoder_value_one, -1, 1);
+  GetEncoderDirection();
 }
 
-void OnSecondEncoderRotate()
+void GetEncoderDirection()
 {
-  if (digitalRead(rotary_a_two) == digitalRead(rotary_b_two)) encoder_value_two++;
-  else encoder_value_two--;
-  encoder_value_two = constrain(encoder_value_two, -1, 1);
+  if (digitalRead(first_lane.rotary_a) == digitalRead(first_lane.rotary_b)) first_lane.encoder_value++;
+  else first_lane.encoder_value--;
+  first_lane.encoder_value = constrain(first_lane.encoder_value, -1, 1);
 }
 
-void UpdateLEDS(Lane& lane, Adafruit_NeoPixel& pixels)
+void UpdateLEDS()
 {  
-  Colour first = lane.GetColourAtIndex(0);
-  Colour second = lane.GetColourAtIndex(1);
-  Colour third = lane.GetColourAtIndex(2);
+  Colour first = first_lane.GetColourAtIndex(0);
+  Colour second = first_lane.GetColourAtIndex(1);
+  Colour third = first_lane.GetColourAtIndex(2);
 
   for (int i = 1; i <= num_leds; i++)
   {
     if (i % 3 != 0 || i == 0) 
     {
-      if (i > 0 && i < 3) pixels.setPixelColor(i - 1, pixels.Color(round(third.r * led_brightness), round(third.g * led_brightness), round(third.b * led_brightness)));
-      else if (i > 3 && i < 6) pixels.setPixelColor(i - 1, pixels.Color(round(second.r * led_brightness), round(second.g * led_brightness), round(second.b * led_brightness)));
-      else if (i > 6) pixels.setPixelColor(i - 1, pixels.Color(round(first.r * led_brightness), round(first.g * led_brightness), round(first.b * led_brightness)));
+      if (i > 0 && i < 3) first_lane.pixels.setPixelColor(i - 1, first_lane.pixels.Color(round(third.r * led_brightness), round(third.g * led_brightness), round(third.b * led_brightness)));
+      else if (i > 3 && i < 6) first_lane.pixels.setPixelColor(i - 1, first_lane.pixels.Color(round(second.r * led_brightness), round(second.g * led_brightness), round(second.b * led_brightness)));
+      else if (i > 6) first_lane.pixels.setPixelColor(i - 1, first_lane.pixels.Color(round(first.r * led_brightness), round(first.g * led_brightness), round(first.b * led_brightness)));
     }
   }
 
-  pixels.show();
+  first_lane.pixels.show();
   delay(500);
 }
 
@@ -172,12 +153,14 @@ void UpdateRotaryLEDs()
   double g = double(first_lane.selected_colour.g) / double(255);
   double b = double(first_lane.selected_colour.b) / double(255);
 
-  digitalWrite(red_encoder_one, 1.0 - r);
-  digitalWrite(green_encoder_one, 1.0 - g);
-  digitalWrite(blue_encoder_one, 1.0 - b);
+  Serial.println(String(first_lane.selected_colour.r) + ", " + String(first_lane.selected_colour.g) + ", " + String(first_lane.selected_colour.b));
+
+  digitalWrite(first_lane.red_encoder, 1.0 - r);
+  digitalWrite(first_lane.green_encoder, 1.0 - g);
+  digitalWrite(first_lane.blue_encoder, 1.0 - b);
 }
 
-void PlayLoseAnimation(Adafruit_NeoPixel& pixels)
+void PlayLoseAnimation()
 {
   can_input = false;
 
@@ -185,18 +168,18 @@ void PlayLoseAnimation(Adafruit_NeoPixel& pixels)
   {
     for (int i = 0; i < num_leds; i++)
     {
-      pixels.setPixelColor(i, pixels.Color(255 * led_brightness, 0, 0));
+      first_lane.pixels.setPixelColor(i, first_lane.pixels.Color(255 * led_brightness, 0, 0));
     }
 
-    first_pixels.show();
+    first_lane.pixels.show();
     delay(500);
 
     for (int i = 0; i < num_leds; i++)
     {
-      pixels.setPixelColor(i, pixels.Color(0, 0, 0));
+      first_lane.pixels.setPixelColor(i, first_lane.pixels.Color(0, 0, 0));
     }
 
-    pixels.show();
+    first_lane.pixels.show();
     delay(500);
   }
 
