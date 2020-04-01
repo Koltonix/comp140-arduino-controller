@@ -70,8 +70,8 @@ float Lane::GetCurrentPercentage()
 void Lane::SetCurrentPercentage(float p)
 {
 	current_percentage = p;
-	if (current_percentage > 360) current_percentage = current_percentage - 360;
-	else if (current_percentage <= 0) current_percentage = 360 + current_percentage;
+	if (current_percentage > 360) current_percentage = interval_to_change_colour;
+	else if (current_percentage <= 0) current_percentage = 360 - interval_to_change_colour;
 
 	this->selected_colour = GetColourAtAngle(current_percentage);
 }
