@@ -54,6 +54,9 @@ void loop()
 {
   if (can_input)
   {
+    Serial.println(first_lane.time_since_last - millis() * 0.001f);
+    if ((millis() - first_lane.time_since_last) * 0.001f > first_lane.default_time) Serial.println("LOST");
+
     UpdateLEDS(first_lane);
     //UpdateLEDS(second_lane, second_pixels);
     
@@ -69,6 +72,8 @@ void loop()
     {
       if (first_lane.NextColourIsCurrent(first_lane.selected_colour))
       {
+        first_lane.time_since_last = millis();
+
         Serial.println("CORRECT");
         first_lane.RemoveNextColour(millis());
         score++;
@@ -94,6 +99,7 @@ void loop()
 void LaneSetup(Lane &lane)
 {
   lane.pixels->begin();
+  first_lane.time_since_last = 0.0f;
 
   for (int i = 0; i < initial_lane_size; i++)
   {
