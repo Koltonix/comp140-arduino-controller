@@ -24,7 +24,7 @@ public:
 	int led_amount;
 	int led_pin;
 
-	Adafruit_NeoPixel &pixels;
+	Adafruit_NeoPixel *pixels;
 
 	QList<Colour> colour_order;
 
