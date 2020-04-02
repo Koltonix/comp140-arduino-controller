@@ -35,7 +35,7 @@ There are two main components that I am using for this controller which is the R
     \label{fig:external_component}%
 \end{figure}
 
-The rotary encoder is used to control the colour currently selected by rotating the dial which then cycles through an array of available colours. The player is informed of the colour selected by the RGB LED on the rotary encoder itself. Once the player thinks the selected colour is the same as the next colour they press the button to submit. The rotary encoder I have has 8 connections in total; 3 for the RGB, 2 for live and ground, and then 3 for the rotaryA, rotaryB and the button.
+The rotary encoder is used to control the colour currently selected by rotating the dial which then cycles through an array of available colours. The player is informed of the colour selected by the RGB LED on the rotary encoder itself. Once the player thinks the selected colour is the same as the next colour they press the button to submit. The rotary encoder I have has 8 connections in total; 3 for the RGB, 2 for live and ground, and then 3 for the rotaryA, rotaryB and the button. I chose an RGB encoder over a regular one since it has the LED inbuilt which avoids more unneccesary wiring as well as it just leaking more aesthetically appealing.
 \\
 \\
 The LED RGB Strip is used to feedback the current state of the game to the player. It represents the queue of colours that are next in order. The player will then use the rotary encoder to match the next colour. This piece of hardware only has three connections which are the live, ground and information wire. I am then using the Adafruit Neopixel library to individually address each LED with a different colour.
@@ -97,6 +97,16 @@ The game itself is to use the dials to change the colour of the selected colour 
     \label{fig:uml-diagrams}%
 \end{figure}
 
+I feel that the UML Diagram that best reflects my software design is the UML Class Diagram as it shows how all of the classes interact and their respective behaviours. I've decided to go with inheritance in my planning for the input since it will allow me to use multiple different types of implementations for the input, but still get the same final value which reduces my redundancy of my code. I then also planned to use a protocol to decouple the Lane and UserInput as much as possible while still requiring the data. The Lane then processes the input data and determines the state of the current lane. From there the GameController uses 'x' amount of Lanes to process the state of the game.
+\\
+\\
+The case diagram was also useful in representing my software on a broader scale in terms of the real world since it shows how the user interacts with the Arduino and how that translates into the software. It also represents my software design between different systems too since the Arduino will interact with the user, but also Unity separately too.
+\\
+\\
+The sequence diagram was useful in representing the interaction of the Arduino and the user in a closer scope rather than a more broader sense like the case diagram. It also shows the data transfer between each piece of hardware and software too.
+
+\section{Reflection}
+
 \subsection{Arduino Ports}
 In hindsight, one area would have benefit me from the would have been to look into how many ports all of my components would need since I only realised once I had the physical components that I would have too few slots for everything I needed hence the scaling back in the size of my controller and the features.
 \\
@@ -110,7 +120,7 @@ Another difficult area was the soldering since I had never actually done it befo
 \\
 
 \subsection{C++ in General}
-Since my controller is entirely independent from any other system except the Arduino I needed to code everything in C++ which proved to be quite a challenge mainly due to the debugging difficulties. One example is where I spent a fair amount of hours trying to figure out a pointer issue that I was having and finally narrowed it down to an array that wouldn't work one tenth of the time; however, this project has been exceptional practice for C++.
+Since my controller is entirely independent from any other system except the Arduino I needed to code everything in C/C++ which proved to be quite a challenge mainly due to the debugging difficulties. One example is where I spent a fair amount of hours trying to figure out a pointer issue that I was having and finally narrowed it down to an array that wouldn't work one tenth of the time; however, this project has been exceptional practice for C++. In the future, I would have probably looked into C++ a bit earlier.
 \\
 
 \subsection{C++ Arduino Libraries}
@@ -118,5 +128,5 @@ A final issue I had near the deadline was that the libraries that I had used whe
 \\
 
 \subsection{Summary}
-Looking back at this project I'm quite pleased overall with the final product I have produced in regards to what I had intended from my proposal since although I did have to cut back the LCD screen and three lane idea I have still been able to produce the in built controller that I've wanted to make from the start using LEDs and a rotary encoder.
+In retrospect, I probably would have researched much more into more minute details such as the C/C++ integration with the Arduino as well as the components themselves. Overall I'm quite pleased with the final product I have produced in regards to what I had intended from my proposal since although I did have to cut back the LCD screen and three lane idea I have still been able to produce the in built controller that I've wanted to make from the start using LEDs and a rotary encoder.
 \end{document}
