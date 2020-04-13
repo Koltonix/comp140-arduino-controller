@@ -32,8 +32,8 @@ Lane::Lane(int laneIndex, int rotary_a, int rotary_b, int button, int red, int g
 	this->available_colours.push_back(Colour(0, 255, 255)); //Cyan
 	this->available_colours.push_back(Colour(255, 0, 255)); //Magenta
 
-	interval_to_change_colour = 360 / available_colours.size() - 1;
-	SetCurrentPercentage(current_percentage);
+	interval_to_change_colour = 360 / available_colours.size();
+	SetCurrentPercentage(interval_to_change_colour);
 
 	this->pixels = new Adafruit_NeoPixel(led_amount, led_pin, NEO_GRB + NEO_KHZ800);
 }
@@ -67,11 +67,11 @@ float Lane::GetCurrentPercentage()
 	return this->current_percentage;
 }
 
-void Lane::SetCurrentPercentage(float p)
+void Lane::SetCurrentPercentage(float direction)
 {
-	current_percentage = p;
+	current_percentage += (direction * interval_to_change_colour);
 	if (current_percentage > 360) current_percentage = interval_to_change_colour;
-	else if (current_percentage <= 0) current_percentage = 360 - interval_to_change_colour;
+	else if (current_percentage <= 0) current_percentage = 360;
 
 	this->selected_colour = GetColourAtAngle(current_percentage);
 }

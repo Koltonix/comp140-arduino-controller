@@ -44,26 +44,31 @@ void setup()
   Serial.begin(115200);
 
   LaneSetup(first_lane);
-  //LaneSetup(second_lane);
+  LaneSetup(second_lane);
 
   RotaryEncoderSetup(first_lane);
-  //RotaryEncoderSetup(second_lane);
+  RotaryEncoderSetup(second_lane);
+
+  
+  attachInterrupt(digitalPinToInterrupt(first_lane.rotary_a), OnFirstEncoder, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(second_lane.rotary_a), OnSecondEncoder, CHANGE);
 }
 
 void loop() 
 {
   if (can_input)
   {
-    Serial.println(first_lane.time_since_last - millis() * 0.001f);
-    if ((millis() - first_lane.time_since_last) * 0.001f > first_lane.default_time) Serial.println("LOST");
+    //Serial.println(first_lane.time_since_last - millis() * 0.001f);
+    //if ((millis() - first_lane.time_since_last) * 0.001f > first_lane.default_time) Serial.println("LOST");
 
     UpdateLEDS(first_lane);
-    //UpdateLEDS(second_lane, second_pixels);
+    UpdateLEDS(second_lane);
     
     UpdateRotaryLEDs(first_lane); 
-    //UpdateRotaryLEDs(second_lane);
+    UpdateRotaryLEDs(second_lane);
 
-    first_lane.SetCurrentPercentage(first_lane.current_percentage + (first_lane.interval_to_change_colour * float(first_lane.encoder_value)));
+    first_lane.SetCurrentPercentage(first_lane.encoder_value);
+    second_lane.SetCurrentPercentage(second_lane.encoder_value);
 
     //if (second_lane.encoder_value > 0) second_lane.SetCurrentPercentage(second_lane.current_percentage + turn_multiplier);
     //if (second_lane.encoder_value < 0) second_lane.SetCurrentPercentage(second_lane.current_percentage - turn_multiplier);
@@ -89,10 +94,11 @@ void loop()
       }
     }
 
-    Serial.println(first_lane.current_percentage);
-    Serial.println();
-    Serial.println(String(first_lane.selected_colour.r) + ", " + String(first_lane.selected_colour.g) + ", " + String(first_lane.selected_colour.b));
+    Serial.println("first: " + String(first_lane.current_percentage));
+    Serial.println("second: " + String(second_lane.current_percentage));
+    //Serial.println(String(first_lane.selected_colour.r) + ", " + String(first_lane.selected_colour.g) + ", " + String(first_lane.selected_colour.b));
     first_lane.encoder_value = 0;
+    second_lane.encoder_value = 0;
   }
 }
 
@@ -118,13 +124,16 @@ void RotaryEncoderSetup(Lane &lane)
   pinMode(lane.red_encoder, OUTPUT);
   pinMode(lane.green_encoder, OUTPUT);
   pinMode(lane.blue_encoder, OUTPUT);
-
-  attachInterrupt(0, OnEncoderRotate, CHANGE);
 }
 
-void OnEncoderRotate()
+void OnFirstEncoder()
 {
   GetEncoderDirection(first_lane);
+}
+
+void OnSecondEncoder()
+{
+  GetEncoderDirection(second_lane);
 }
 
 void GetEncoderDirection(Lane &lane)
