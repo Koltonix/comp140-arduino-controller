@@ -61,26 +61,25 @@ void loop()
     //Serial.println(first_lane.time_since_last - millis() * 0.001f);
     //if ((millis() - first_lane.time_since_last) * 0.001f > first_lane.default_time) Serial.println("LOST");
 
-    UpdateLEDS(first_lane);
-    UpdateLEDS(second_lane);
-    
-    UpdateRotaryLEDs(first_lane); 
-    UpdateRotaryLEDs(second_lane);
+    UpdateLane(first_lane);
+  }
+}
 
-    first_lane.SetCurrentPercentage(first_lane.encoder_value);
-    second_lane.SetCurrentPercentage(second_lane.encoder_value);
+void UpdateLane(Lane &lane)
+{
+    UpdateLEDS(lane);
+    UpdateRotaryLEDs(lane); 
 
-    //if (second_lane.encoder_value > 0) second_lane.SetCurrentPercentage(second_lane.current_percentage + turn_multiplier);
-    //if (second_lane.encoder_value < 0) second_lane.SetCurrentPercentage(second_lane.current_percentage - turn_multiplier);
+    first_lane.SetCurrentPercentage(lane.encoder_value);
 
     if (digitalRead(first_lane.button) > 0)
     {
-      if (first_lane.NextColourIsCurrent(first_lane.selected_colour))
+      if (lane.NextColourIsCurrent(lane.selected_colour))
       {
-        first_lane.time_since_last = millis();
+        lane.time_since_last = millis();
 
         Serial.println("CORRECT");
-        first_lane.RemoveNextColour(millis());
+        lane.RemoveNextColour(millis());
         score++;
       }
 
@@ -89,17 +88,14 @@ void loop()
         Serial.println("INCORRECT"); 
         score--;
         
-        PlayLoseAnimation(first_lane);
+        PlayLoseAnimation(lane);
         GameOver();
       }
     }
 
-    Serial.println("first: " + String(first_lane.current_percentage));
-    Serial.println("second: " + String(second_lane.current_percentage));
+    Serial.println(String(lane.lane_index) + ": " + String(first_lane.current_percentage));
     //Serial.println(String(first_lane.selected_colour.r) + ", " + String(first_lane.selected_colour.g) + ", " + String(first_lane.selected_colour.b));
-    first_lane.encoder_value = 0;
-    second_lane.encoder_value = 0;
-  }
+    lane.encoder_value = 0;
 }
 
 void LaneSetup(Lane &lane)
