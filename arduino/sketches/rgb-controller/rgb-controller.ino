@@ -39,6 +39,8 @@ int led_pin_two = 12;
 Lane first_lane = Lane(0, rotary_a_one, rotary_b_one, encoder_button_one, red_encoder_one, green_encoder_one, blue_encoder_one, num_leds, led_pin_one);
 Lane second_lane = Lane(1, rotary_a_two, rotary_b_two, encoder_button_two, red_encoder_two, green_encoder_two, blue_encoder_two, num_leds, led_pin_two);
 
+Lane lanes[] = {first_lane, second_lane};
+
 void setup() 
 {
   Serial.begin(115200);
@@ -48,20 +50,51 @@ void setup()
 
   RotaryEncoderSetup(first_lane);
   RotaryEncoderSetup(second_lane);
-
   
   attachInterrupt(digitalPinToInterrupt(first_lane.rotary_a), OnFirstEncoder, CHANGE);
   attachInterrupt(digitalPinToInterrupt(second_lane.rotary_a), OnSecondEncoder, CHANGE);
 }
 
+String incomingString;
+
 void loop() 
 {
+  SendByteInput();
+
   if (can_input)
   {
     //Serial.println(first_lane.time_since_last - millis() * 0.001f);
     //if ((millis() - first_lane.time_since_last) * 0.001f > first_lane.default_time) Serial.println("LOST");
 
     UpdateLane(first_lane);
+    UpdateLane(second_lane);
+  }
+}
+
+void SendByteInput()
+{
+  if (Serial.available() > 0)
+  {
+    incomingString = Serial.readString();
+
+    //Has to be done due to VSCode Arduino Extension and how it enters the string as the last two are always blank
+    incomingString.remove(incomingString.length() - 1);
+    incomingString.remove(incomingString.length() - 1);
+
+    int laneIndex = incomingString[incomingString.length() - 1] - 48;
+    if (laneIndex > (sizeof(lanes) / sizeof(lanes[0])) - 1) return;
+    Lane* lane = &lanes[laneIndex];
+
+    //Removing the unique lane identifier number
+    incomingString.remove(incomingString.length() - 1);
+    Serial.println(incomingString);
+    if (incomingString == "encoderValue")
+    {
+      Serial.println(lane->current_percentage);
+      Serial.println(lanes[laneIndex].current_percentage);
+      Serial.println(first_lane.current_percentage);
+      //Serial.write(lane.current_percentage);
+    }
   }
 }
 
@@ -93,7 +126,7 @@ void UpdateLane(Lane &lane)
       }
     }
 
-    Serial.println(String(lane.lane_index) + ": " + String(first_lane.current_percentage));
+    //Serial.println(String(lane.lane_index) + ": " + String(first_lane.current_percentage));
     //Serial.println(String(first_lane.selected_colour.r) + ", " + String(first_lane.selected_colour.g) + ", " + String(first_lane.selected_colour.b));
     lane.encoder_value = 0;
 }
