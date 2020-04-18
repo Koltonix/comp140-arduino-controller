@@ -45,6 +45,7 @@ public:
 	float time_since_last = 0.0f;
 	float default_time = 5.0f;
 
+	Lane();
 	Lane(int laneIndex, int rotary_a, int rotary_b, int button, int red, int green, int blue, int led_amount, int led_pin);
 
 	void AddNewColour(Colour colour);

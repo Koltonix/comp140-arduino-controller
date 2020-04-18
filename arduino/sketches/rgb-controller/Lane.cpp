@@ -12,11 +12,14 @@
 #include "lane.h"
 #include "colour.h"
 
+//Default Constructor
+Lane::Lane(){}
+
 //Constructor for the Lane which takes in the Arduino
 //hardware inputs for the rotary encoder and rgb LED strip
-Lane::Lane(int laneIndex, int rotary_a, int rotary_b, int button, int red, int green, int blue, int led_amount, int led_pin)
+Lane::Lane(int lane_index, int rotary_a, int rotary_b, int button, int red, int green, int blue, int led_amount, int led_pin)
 {
-	this->lane_index = laneIndex;
+	this->lane_index = lane_index;
 	this->encoder_value = 0;
 
 	this->rotary_a = rotary_a;

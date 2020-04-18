@@ -8,6 +8,7 @@
 // Handes the state of the overall game on all lanes
 //////////////////////////////////////////////////
 
+#include <QList.h>
 #include <Adafruit_NeoPixel.h>
 
 #include "math.h"
@@ -49,7 +50,7 @@ int led_pin_two = 12;
 Lane first_lane = Lane(0, rotary_a_one, rotary_b_one, encoder_button_one, red_encoder_one, green_encoder_one, blue_encoder_one, num_leds, led_pin_one);
 Lane second_lane = Lane(1, rotary_a_two, rotary_b_two, encoder_button_two, red_encoder_two, green_encoder_two, blue_encoder_two, num_leds, led_pin_two);
 
-Lane lanes[] = {first_lane, second_lane};
+Lane* lanes[2];
 
 //External Input
 String incomingString;
@@ -57,6 +58,9 @@ String incomingString;
 void setup() 
 {
   Serial.begin(115200);
+
+  lanes[0] = &first_lane;
+  lanes[1] = &second_lane;  
 
   LaneSetup(first_lane);
   LaneSetup(second_lane);
@@ -99,17 +103,21 @@ void SendByteInput()
 
     int laneIndex = incomingString[incomingString.length() - 1] - 48;
     if (laneIndex > (sizeof(lanes) / sizeof(lanes[0])) - 1) return;
-    Lane* lane = &lanes[laneIndex];
+    Lane* lane = lanes[laneIndex];
 
     //Removing the unique lane identifier number
     incomingString.remove(incomingString.length() - 1);
     Serial.println(incomingString);
-    if (incomingString == "encoderValue")
+
+    if (incomingString == "currentAngle")
     {
       Serial.println(lane->current_angle);
-      Serial.println(lanes[laneIndex].current_angle);
-      Serial.println(first_lane.current_angle);
-      //Serial.write(lane.current_percentage);
+      //Serial.write(lane.current_angle);
+    }
+
+    else if(incomingString == "encoderValue")
+    {
+      Serial.println(lane->encoder_value);
     }
   }
 }
