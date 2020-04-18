@@ -1,8 +1,16 @@
+//////////////////////////////////////////////////
+// Christopher Robertson
+// MIT License Copyright (c) 2020
+// Google C++ Style Guide
+//////////////////////////////////////////////////
+
 #ifndef HSV_h
 #define HSV_h
 
 #include "colour.h"
 
+//Stores the data of the HSV colour wheel
+//Converts RGB values to HSV
 class HSV
 {
 public:

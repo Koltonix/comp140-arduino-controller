@@ -1,13 +1,25 @@
+//////////////////////////////////////////////////
+// Christopher Robertson
+// MIT License Copyright (c) 2020
+// Google C++ Style Guide
+//////////////////////////////////////////////////
+
 #include "hsv.h"
 
+///Default Constructor Initialiser
 HSV::HSV() : h(0), s(0), v(0) {}
+//Assigns the parameters immediately to the public variables
+//WARNING: This does not currently include a sanity check
 HSV::HSV(double h, double s, double v) : h(h), s(s), v(v) {}
 
+//Takes in the red, blue and green (RGB) and converts it into the HSV format
+//A HSV class is then returned with the new data.
 //Source: https://stackoverflow.com/questions/3018313/algorithm-to-convert-rgb-to-hsv-and-hsv-to-rgb-in-range-0-255-for-both	
 HSV HSV::RGBToHSV(int r, int g, int b)
 {
 	HSV hsv = HSV();
 
+	//Normalising the rgb values from 0-1
 	double _r = (double)r / 255;
 	double _g = (double)g / 255;
 	double _b = (double)b / 255;
@@ -21,6 +33,7 @@ HSV HSV::RGBToHSV(int r, int g, int b)
 	double delta = max - min;
 	hsv.v = max;
 
+	//Edge case check
 	if (delta < 0.00001)
 	{
 		hsv.s = 0;

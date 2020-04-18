@@ -1,3 +1,8 @@
+//////////////////////////////////////////////////
+// Christopher Robertson
+// MIT License Copyright (c) 2020
+// Google C++ Style Guide
+//////////////////////////////////////////////////
 
 #ifndef Lane_h
 #define Lane_h
@@ -7,6 +12,9 @@
 
 using namespace std;
 
+//State handler for the Arduino Lane
+//Stores all of the data related to the physical lane
+//on the arduino board
 class Lane 
 {
 public:
@@ -32,7 +40,7 @@ public:
 	QList<Colour> available_colours;
 
 	float interval_to_change_colour;
-	float current_percentage = 0.0f;
+	float current_angle = 0.0f;
 
 	float time_since_last = 0.0f;
 	float default_time = 5.0f;
@@ -45,8 +53,8 @@ public:
 	Colour GetColourAtIndex(int index);
 	Colour GetColourAtAngle(float angle);
 
-	float GetCurrentPercentage();
-	void SetCurrentPercentage(float p);
+	float GetCurrentAngle();
+	void SetCurrentAngle(float p);
 
 	Colour GetRandomColourPreset(int random_modifier);
 	bool NextColourIsCurrent(Colour current_colour);	

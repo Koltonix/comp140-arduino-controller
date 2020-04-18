@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////
+// Christopher Robertson
+// MIT License Copyright (c) 2020
+// Google C++ Style Guide
+//
+// Handles the input from the Arduino Input
+// Handles the output to external softwares like Unit
+// Handes the state of the overall game on all lanes
+//////////////////////////////////////////////////
+
 #include <Adafruit_NeoPixel.h>
 
 #include "math.h"
@@ -14,7 +24,7 @@ float first_rotary_encoder = 0.0f;
 int num_leds = 8;
 int score = 0;
 
-//Rotary Encoder
+//Rotary Encoder Ports
 int red_encoder_one = A0;
 int green_encoder_one = A1;
 int blue_encoder_one = A2;
@@ -31,15 +41,18 @@ int rotary_b_two = 8;
 int rotary_a_two = 9;
 int encoder_button_two = 10;
 
-//Lane 1 LEDS
+//Lane LED Ports
 int led_pin_one = 7;
 int led_pin_two = 12;
 
-//Lane 1
+//Lane References
 Lane first_lane = Lane(0, rotary_a_one, rotary_b_one, encoder_button_one, red_encoder_one, green_encoder_one, blue_encoder_one, num_leds, led_pin_one);
 Lane second_lane = Lane(1, rotary_a_two, rotary_b_two, encoder_button_two, red_encoder_two, green_encoder_two, blue_encoder_two, num_leds, led_pin_two);
 
 Lane lanes[] = {first_lane, second_lane};
+
+//External Input
+String incomingString;
 
 void setup() 
 {
@@ -55,7 +68,7 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(second_lane.rotary_a), OnSecondEncoder, CHANGE);
 }
 
-String incomingString;
+
 
 void loop() 
 {
@@ -67,17 +80,20 @@ void loop()
     //if ((millis() - first_lane.time_since_last) * 0.001f > first_lane.default_time) Serial.println("LOST");
 
     UpdateLane(first_lane);
-    UpdateLane(second_lane);
+    //UpdateLane(second_lane);
   }
 }
 
+//Sends a string of data depending on the provided string provided in the console
+//For example: encoderValue0 would return the encoder value of lane 0
 void SendByteInput()
 {
   if (Serial.available() > 0)
   {
     incomingString = Serial.readString();
 
-    //Has to be done due to VSCode Arduino Extension and how it enters the string as the last two are always blank
+    //Has to be done due to VSCode Arduino Extension and 
+    //how it enters the string as the last two are always blank
     incomingString.remove(incomingString.length() - 1);
     incomingString.remove(incomingString.length() - 1);
 
@@ -90,23 +106,27 @@ void SendByteInput()
     Serial.println(incomingString);
     if (incomingString == "encoderValue")
     {
-      Serial.println(lane->current_percentage);
-      Serial.println(lanes[laneIndex].current_percentage);
-      Serial.println(first_lane.current_percentage);
+      Serial.println(lane->current_angle);
+      Serial.println(lanes[laneIndex].current_angle);
+      Serial.println(first_lane.current_angle);
       //Serial.write(lane.current_percentage);
     }
   }
 }
 
+
+//Updates for the Lane using a lane reference to modify and read
 void UpdateLane(Lane &lane)
 {
     UpdateLEDS(lane);
     UpdateRotaryLEDs(lane); 
 
-    first_lane.SetCurrentPercentage(lane.encoder_value);
+    first_lane.SetCurrentAngle(lane.encoder_value);
 
+    //If the rotary encoder button has bee pressed
     if (digitalRead(first_lane.button) > 0)
     {
+      //Successful push
       if (lane.NextColourIsCurrent(lane.selected_colour))
       {
         lane.time_since_last = millis();
@@ -116,6 +136,7 @@ void UpdateLane(Lane &lane)
         score++;
       }
 
+      //Failed push
       else 
       {
         Serial.println("INCORRECT"); 
@@ -131,6 +152,7 @@ void UpdateLane(Lane &lane)
     lane.encoder_value = 0;
 }
 
+//Initial Setup of a lane using a lane reference
 void LaneSetup(Lane &lane)
 {
   lane.pixels->begin();
@@ -144,6 +166,8 @@ void LaneSetup(Lane &lane)
   }
 }
 
+//Initial Setup of the Arduino Ports for the rotary encoder and
+//the LED strip using a lane class to read from
 void RotaryEncoderSetup(Lane &lane)
 { 
   pinMode(lane.rotary_a, INPUT_PULLUP);
@@ -155,23 +179,35 @@ void RotaryEncoderSetup(Lane &lane)
   pinMode(lane.blue_encoder, OUTPUT);
 }
 
+
+//Separate function is required to attach to the interrupt in the setup
+//Calls the function to change the direction using a lane reference
 void OnFirstEncoder()
 {
   GetEncoderDirection(first_lane);
 }
 
+//Separate function is required to attach to the interrupt in the setup
+//Calls the function to change the direction using a lane reference
 void OnSecondEncoder()
 {
   GetEncoderDirection(second_lane);
 }
 
+//Changes the encoder value of the rotary encoder using
+//the direction change
+//Uses a lane reference to read and write to
 void GetEncoderDirection(Lane &lane)
 {
   if (digitalRead(lane.rotary_a) == digitalRead(lane.rotary_b)) lane.encoder_value++;
   else lane.encoder_value--;
+
   lane.encoder_value = constrain(lane.encoder_value, -1, 1);
 }
 
+//Updating the physical LEDs 
+//Uses a lane reference to get the colours and then
+//sets the LED colours using it's Adafruit_NeoPixel class
 void UpdateLEDS(Lane& lane)
 {  
   Colour first = lane.GetColourAtIndex(0);
@@ -180,6 +216,9 @@ void UpdateLEDS(Lane& lane)
 
   for (int i = 1; i <= num_leds; i++)
   {
+    //Only LEDs that are not multiples of 3
+    //The reason for this is the physical design of the 
+    //controller and how it has been built by
     if (i % 3 != 0 || i == 0) 
     {
       if (i > 0 && i < 3) lane.pixels->setPixelColor(i - 1, lane.pixels->Color(round(third.r * led_brightness), round(third.g * led_brightness), round(third.b * led_brightness)));
@@ -192,6 +231,8 @@ void UpdateLEDS(Lane& lane)
   delay(500);
 }
 
+//Updates the rotary encoder RGB light 
+//Uses a Lane reference to read the selected colour from
 void UpdateRotaryLEDs(Lane &lane)
 {
   double r = double(lane.selected_colour.r) / double(255);
@@ -203,12 +244,15 @@ void UpdateRotaryLEDs(Lane &lane)
   digitalWrite(lane.blue_encoder, 1.0 - b);
 }
 
+//Plays a short lose animation on the Lane LEDs provided
 void PlayLoseAnimation(Lane &lane)
 {
   can_input = false;
 
+  //Blinking Three Times
   for (int j = 0; j < 3; j++)
   {
+    //Red Blink
     for (int i = 0; i < lane.led_amount; i++)
     {
       lane.pixels->setPixelColor(i, lane.pixels->Color(255 * led_brightness, 0, 0));
@@ -217,6 +261,7 @@ void PlayLoseAnimation(Lane &lane)
     lane.pixels->show();
     delay(500);
 
+    //No Light
     for (int i = 0; i < lane.led_amount; i++)
     {
       lane.pixels->setPixelColor(i, lane.pixels->Color(0, 0, 0));
@@ -226,16 +271,19 @@ void PlayLoseAnimation(Lane &lane)
     delay(500);
   }
 
-  setup();
+  //Restarting the Game
+  GameOver();
   can_input = true;
 }
 
+//Resets the Game Values
 void GameOver()
 {
   score = 0;
   setup();
 }
 
+//Returns a String based on the colour class provided
 String GetStringFromColour(Colour colour)
 {
   String current_colour = String(colour.r) + ", " + String(colour.g) + ", " + String(colour.b);

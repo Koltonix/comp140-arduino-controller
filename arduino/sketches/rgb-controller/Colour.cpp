@@ -1,15 +1,26 @@
+//////////////////////////////////////////////////
+// Christopher Robertson
+// MIT License Copyright (c) 2020
+// Google C++ Style Guide
+//////////////////////////////////////////////////
+
 #include "math.h"
 #include "colour.h"
 #include "hsv.h"
 
 using namespace std;
 
+//Default Constructor Initialiser
 Colour::Colour() : r(0), g(0), b(0) {}
+
+//Assigns the RGB colour parameters to the respective public variables
 Colour::Colour(int r, int g, int b) : r(r), g(g), b(b)
 {
 	int rgb[] = { r, g, b };
 	int rgb_length = sizeof(rgb) / sizeof(rgb[0]);
 
+	//Iterates through rgb values and does a sanity check to ensure
+	//that they are between 0-255
 	for (int i = 0; i < rgb_length; i++)
 	{
 		if (rgb[i] > 255) rgb[i] = 255;
@@ -21,8 +32,10 @@ Colour::Colour(int r, int g, int b) : r(r), g(g), b(b)
 	this->b = rgb[2];
 }
 
-//Source: https://stackoverflow.com/questions/3018313/algorithm-to-convert-rgb-to-hsv-and-hsv-to-rgb-in-range-0-255-for-both
-//Source: https://www.programmingalgorithms.com/algorithm/hsv-to-rgb/
+//Converts a the hue, saturation and value parameters to an RGB value 
+//and returns a Colour class where it is stored
+//Source #1: https://stackoverflow.com/questions/3018313/algorithm-to-convert-rgb-to-hsv-and-hsv-to-rgb-in-range-0-255-for-both
+//Source #2: https://www.programmingalgorithms.com/algorithm/hsv-to-rgb/
 Colour Colour::HSVToRGB(double h, double s, double v)
 {
 	int i;
@@ -43,6 +56,7 @@ Colour Colour::HSVToRGB(double h, double s, double v)
 		return colour;
 	}
 
+	//Sanity check to ensure the hue is between 0 and 360
 	if (h >= 360.0) h = 0.0;
 	else h /= 60.0;
 
