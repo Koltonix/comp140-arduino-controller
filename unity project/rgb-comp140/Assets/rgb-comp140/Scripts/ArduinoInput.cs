@@ -34,8 +34,12 @@ namespace comp140.input
         private void Update()
         {
             string firstLaneValues = ReadFromArduino(readTimeout);
-            Debug.Log(firstLaneValues);
-            if (firstLaneValues != null) lanes[0].DecodeString(firstLaneValues);
+
+            if (firstLaneValues != null)
+            {
+                lanes[0].allValues = firstLaneValues.DecodeArduinoString();
+                lanes[0].AssignStringsToValues(lanes[0].allValues);
+            }
         }
 
         private void ConnectToSerial()

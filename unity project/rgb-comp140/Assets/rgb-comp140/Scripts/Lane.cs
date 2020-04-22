@@ -38,42 +38,11 @@ namespace comp140.data
         [Header("String Decoder")]
         [HideInInspector]
         private string lastValue;
-        private string[] allValues;
+        public string[] allValues;
 
         public Lane(int laneIndex)
         {
             this.laneIndex = laneIndex;
-        }
-
-        /// <0/0/60/0/0.00/255,0,0/0,0,255/255,255,0/0,255,255>
-        public string[] DecodeString(string message)
-        {
-            List<string> allStrings = new List<string>();
-
-            int index = 0;
-            lastValue = "";
-
-            for (int i = 0; i < message.Length; i++)
-            {
-                //Must start with the opening
-                if (message[0] != '<') return null;
-                if (message[i] == '<' ) continue;
-
-                if (message[i] == '/' || message[i] == '>')
-                {
-                    allStrings.Add(lastValue);
-
-                    lastValue = "";
-                    index++;
-                }
-
-                else lastValue += message[i];
-            }
-
-            allValues = allStrings.ToArray();
-            AssignStringsToValues(allValues);
-
-            return allStrings.ToArray();
         }
 
         public void AssignStringsToValues(string[] allStrings)
