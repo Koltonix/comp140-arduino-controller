@@ -28,8 +28,6 @@ namespace comp140.gameplay
 
         private void Start()
         {
-            Debug.Log(ColourConverter.DecodeColourString("255,255,255"));
-
             if (inputObject) laneData = inputObject.GetComponent<ILane>();
             else if (!inputObject) laneData = FindObjectOfType<ArduinoInput>().GetComponent<ILane>();
         }

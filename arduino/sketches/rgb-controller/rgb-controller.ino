@@ -52,9 +52,6 @@ Lane second_lane = Lane(1, rotary_a_two, rotary_b_two, encoder_button_two, red_e
 
 Lane* lanes[2];
 
-//External Input
-String incomingString;
-
 void setup() 
 {
   Serial.begin(115200);
@@ -73,13 +70,13 @@ void setup()
 }
 
 
-
 void loop() 
 {
-  SendByteInput();
+  
 
   if (can_input)
   {
+    SendByteInput();
     //Serial.println(first_lane.time_since_last - millis() * 0.001f);
     //if ((millis() - first_lane.time_since_last) * 0.001f > first_lane.default_time) Serial.println("LOST");
 
@@ -94,31 +91,16 @@ void SendByteInput()
 {
   if (Serial.available() > 0)
   {
-    incomingString = Serial.readString();
+    int incomingByte = Serial.read();
+    Serial.flush();
 
-    //Has to be done due to VSCode Arduino Extension and 
-    //how it enters the string as the last two are always blank
-    incomingString.remove(incomingString.length() - 1);
-    incomingString.remove(incomingString.length() - 1);
-
-    int laneIndex = incomingString[incomingString.length() - 1] - 48;
-    if (laneIndex > (sizeof(lanes) / sizeof(lanes[0])) - 1) return;
-    Lane* lane = lanes[laneIndex];
-
-    //Removing the unique lane identifier number
-    incomingString.remove(incomingString.length() - 1);
-    Serial.println(incomingString);
-
-    if (incomingString == "currentAngle")
-    {
-      Serial.println(lane->current_angle);
-      //Serial.write(lane.current_angle);
-    }
-
-    else if(incomingString == "encoderValue")
-    {
-      Serial.println(lane->encoder_value);
-    }
+    if (incomingByte == 'a') Serial.println(round(first_lane.current_angle));
+    if (incomingByte == 'b') Serial.println(first_lane.encoder_value);
+    if (incomingByte == 'c') Serial.println(first_lane.time_since_last);
+    if (incomingByte == 'd') Serial.println(GetStringFromColour(first_lane.selected_colour));
+    if (incomingByte == 'e') Serial.println(GetStringFromColour(first_lane.GetColourAtIndex(0)));
+    if (incomingByte == 'f') Serial.println(GetStringFromColour(first_lane.GetColourAtIndex(1)));
+    if (incomingByte == 'g') Serial.println(GetStringFromColour(first_lane.GetColourAtIndex(2)));
   }
 }
 
@@ -294,6 +276,6 @@ void GameOver()
 //Returns a String based on the colour class provided
 String GetStringFromColour(Colour colour)
 {
-  String current_colour = String(colour.r) + ", " + String(colour.g) + ", " + String(colour.b);
+  String current_colour = String(colour.r) + "," + String(colour.g) + "," + String(colour.b);
   return current_colour;
 }

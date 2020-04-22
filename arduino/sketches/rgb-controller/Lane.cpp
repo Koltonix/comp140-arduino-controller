@@ -50,6 +50,7 @@ Lane::Lane(int lane_index, int rotary_a, int rotary_b, int button, int red, int 
 
 	//LED strip library initialisation
 	this->pixels = new Adafruit_NeoPixel(led_amount, led_pin, NEO_GRB + NEO_KHZ800);
+	selected_colour = GetColourAtAngle(current_angle);
 }
 
 //Adds a new colour to the queue of colours to select
@@ -103,7 +104,7 @@ void Lane::SetCurrentAngle(float direction)
 	else if (current_angle <= 0) current_angle = 360;
 
 	//Sets the currently selected colour
-	this->selected_colour = GetColourAtAngle(current_angle);
+	selected_colour = GetColourAtAngle(current_angle);
 }
 
 //Checks to see if the selected colour is the same as the next colour

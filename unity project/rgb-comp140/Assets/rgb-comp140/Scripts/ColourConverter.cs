@@ -5,6 +5,8 @@ public static class ColourConverter
 {
     public static Color32 DecodeColourString(string colourInput)
     {
+        if (colourInput == null) return Color.black;
+
         string currentValue = "";
         int colourIndex = 0;
         int[] rgbValue = new int[3];
