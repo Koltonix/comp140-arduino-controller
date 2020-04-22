@@ -7,56 +7,134 @@ using TMPro;
 namespace comp140.data
 {
     [Serializable]
-    public class Lane
+    public class Lane : MonoBehaviour
     {
         [Header("Lane Identifier")]
-        public int laneIndex = 0;
+        #region private int laneIndex;
+        private int laneIndex = 0;
+        public int LaneIndex
+        {
+            get { return laneIndex; }
+            set
+            {
+                laneIndex = value;
+            }
+        }
+        #endregion
+
+        [Space]
 
         [Header("Lane Input")]
-        public float encoderValue = 0.0f;
+        #region private float encoderValue;
+        private float encoderValue;
+        public float EncoderValue
+        {
+            get { return encoderValue; }
+            set
+            {
+                encoderValue = value;
+                encoderValueText.text = encoderValue.ToString();
+            }
+        }
+
+        #endregion
+        [Space]
 
         [Header("Lane State")]
-        public int score = 0;
-        public float currentAngle = 0.0f;
-        public float timeLeft = 0.0f;
+        #region private int score;
+        private int score = 0;
+        public int Score
+        { 
+            get { return score; }
+            set
+            {
+                score = value;
+                scoreText.text = "Score:\n" + score;
+            }
+        }
+        #endregion
+        #region private float currentAngle;
+        private float currentAngle = 0.0f;
+        public float CurrentAngle
+        {
+            get { return currentAngle; }
+            set
+            {
+                currentAngle = value;
+                currentAngleText.text = currentAngle.ToString();
+            }
+        }
+        #endregion
+        #region private float timeLeft;
+        private float timeLeft = 0.0f;
+        public float TimeLeft
+        {
+            get { return timeLeft; }
+            set
+            {
+                timeLeft = value;
+                timerText.text = timeLeft.ToString();
+            }
+        }
+        #endregion
 
-        private const int maxNumOfColours = 3;
         public Color32 selectedColour = Color.black;
-        public Color32[] colourOrder = new Color32[maxNumOfColours];
-
-        [Header("UI Settings")]
-        [SerializeField]
-        private TextMeshProUGUI[] laneEncoderValue;
-        [SerializeField]
-        private TextMeshProUGUI[] laneTime;
-
-        [SerializeField]
-        private Image[] selectedColours;
-        [SerializeField]
-        private Image[] queuedColours;
+        private Color32[] colourOrder;
+        [Space]
 
         [Header("String Decoder")]
         [HideInInspector]
         private string lastValue;
         public string[] allValues;
+        [Space]
+
+        [Header("UI Settings")]
+        [SerializeField]
+        private TextMeshProUGUI indexText;
+        [SerializeField]
+        private TextMeshProUGUI scoreText;
+        [SerializeField]
+        private TextMeshProUGUI currentAngleText;
+        [SerializeField]
+        private TextMeshProUGUI encoderValueText;
+        [SerializeField]
+        private TextMeshProUGUI timerText;
+
+        [SerializeField]
+        private Image[] laneColours;
 
         public Lane(int laneIndex)
         {
-            this.laneIndex = laneIndex;
+            this.LaneIndex = laneIndex;
         }
 
         public void AssignStringsToValues(string[] allStrings)
         {
-            score = Convert.ToInt32(allStrings[0]);
-            laneIndex = Convert.ToInt32(allStrings[1]);
-            currentAngle = float.Parse(allStrings[2]);
-            encoderValue = Convert.ToInt32(allStrings[3]);
-            timeLeft = float.Parse(allStrings[4]);
+            if (allStrings == null) return;
+
+            Score = Convert.ToInt32(allStrings[0]);
+            LaneIndex = Convert.ToInt32(allStrings[1]);
+            CurrentAngle = float.Parse(allStrings[2]);
+            EncoderValue = Convert.ToInt32(allStrings[3]);
+            TimeLeft = float.Parse(allStrings[4]);
 
             selectedColour = allStrings[5].DecodeColourString();
+
+            colourOrder = new Color32[3];
             colourOrder[0] = allStrings[6].DecodeColourString();
             colourOrder[1] = allStrings[7].DecodeColourString();
             colourOrder[2] = allStrings[8].DecodeColourString();
+
+            SetColourImages();
+        }
+
+        private void SetColourImages()
+        {   
+            for (int i = 0; i < laneColours.Length; i++)
+            {
+                if (i == 0) laneColours[0].color = selectedColour;
+                else laneColours[i].color = colourOrder[i - 1];
+            }
         }
     }
 

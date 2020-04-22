@@ -18,17 +18,11 @@ namespace comp140.input
         private SerialPort serial = null;
 
         [Header("Input Settings")]
-        private const int numOfLanes = 1;
-        private Lane[] lanes = new Lane[numOfLanes];
+        public Lane[] lanes;
 
         private void Start()
         {
             ConnectToSerial();
-            
-            for (int i = 0; i < numOfLanes; i++)
-            {
-                lanes[i] = new Lane(i);
-            }
         }
 
         private void Update()
