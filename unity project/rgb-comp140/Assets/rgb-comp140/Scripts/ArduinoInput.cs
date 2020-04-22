@@ -27,12 +27,18 @@ namespace comp140.input
 
         private void Update()
         {
-            string firstLaneValues = ReadFromArduino(readTimeout);
+            string laneValues = ReadFromArduino(readTimeout);
 
-            if (firstLaneValues != null)
+            if (laneValues != null && laneValues[3] == '0')
             {
-                lanes[0].allValues = firstLaneValues.DecodeArduinoString();
+                lanes[0].allValues = laneValues.DecodeArduinoString();
                 lanes[0].AssignStringsToValues(lanes[0].allValues);
+            }
+
+            else if (laneValues != null && laneValues[3] == '1')
+            {
+                lanes[1].allValues = laneValues.DecodeArduinoString();
+                lanes[1].AssignStringsToValues(lanes[1].allValues);
             }
         }
 

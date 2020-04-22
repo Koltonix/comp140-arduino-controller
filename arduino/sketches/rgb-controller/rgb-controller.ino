@@ -73,6 +73,7 @@ void setup()
 void loop() 
 {
   SendByteInput(first_lane);
+  SendByteInput(second_lane);
 
   if (can_input)
   {
@@ -80,7 +81,7 @@ void loop()
     //if ((millis() - first_lane.time_since_last) * 0.001f > first_lane.default_time) Serial.println("LOST");
 
     UpdateLane(first_lane);
-    //UpdateLane(second_lane);
+    UpdateLane(second_lane);
   }
 }
 
@@ -106,7 +107,7 @@ void SendByteInput(Lane &lane)
     Serial.print("/");
     Serial.print(GetStringFromColour(lane.GetColourAtIndex(2)));
     Serial.print(">");
-    Serial.println();
+    Serial.println(); 
 }
 
 
