@@ -72,11 +72,10 @@ void setup()
 
 void loop() 
 {
-  
+  SendByteInput(first_lane);
 
   if (can_input)
   {
-    SendByteInput();
     //Serial.println(first_lane.time_since_last - millis() * 0.001f);
     //if ((millis() - first_lane.time_since_last) * 0.001f > first_lane.default_time) Serial.println("LOST");
 
@@ -87,21 +86,26 @@ void loop()
 
 //Sends a string of data depending on the provided string provided in the console
 //For example: encoderValue0 would return the encoder value of lane 0
-void SendByteInput()
+void SendByteInput(Lane &lane)
 {
-  if (Serial.available() > 0)
-  {
-    int incomingByte = Serial.read();
-    Serial.flush();
-
-    if (incomingByte == 'a') Serial.println(round(first_lane.current_angle));
-    if (incomingByte == 'b') Serial.println(first_lane.encoder_value);
-    if (incomingByte == 'c') Serial.println(first_lane.time_since_last);
-    if (incomingByte == 'd') Serial.println(GetStringFromColour(first_lane.selected_colour));
-    if (incomingByte == 'e') Serial.println(GetStringFromColour(first_lane.GetColourAtIndex(0)));
-    if (incomingByte == 'f') Serial.println(GetStringFromColour(first_lane.GetColourAtIndex(1)));
-    if (incomingByte == 'g') Serial.println(GetStringFromColour(first_lane.GetColourAtIndex(2)));
-  }
+    Serial.print("<");
+    Serial.print(lane.lane_index);
+    Serial.print("/");
+    Serial.print(round(lane.current_angle));
+    Serial.print("/");
+    Serial.print(lane.encoder_value);
+    Serial.print("/");
+    Serial.print(lane.time_since_last);
+    Serial.print("/");
+    Serial.print(GetStringFromColour(lane.selected_colour));
+    Serial.print("/");
+    Serial.print(GetStringFromColour(lane.GetColourAtIndex(0)));
+    Serial.print("/");
+    Serial.print(GetStringFromColour(lane.GetColourAtIndex(1)));
+    Serial.print("/");
+    Serial.print(GetStringFromColour(lane.GetColourAtIndex(2)));
+    Serial.print(">");
+    Serial.println();
 }
 
 
