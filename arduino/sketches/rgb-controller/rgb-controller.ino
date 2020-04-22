@@ -54,7 +54,7 @@ Lane* lanes[2];
 
 void setup() 
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   lanes[0] = &first_lane;
   lanes[1] = &second_lane;  
@@ -84,11 +84,12 @@ void loop()
   }
 }
 
-//Sends a string of data depending on the provided string provided in the console
-//For example: encoderValue0 would return the encoder value of lane 0
+//Sends all of the data of the lane in one line to be decoded in Unity
 void SendByteInput(Lane &lane)
 {
     Serial.print("<");
+    Serial.print(score);
+    Serial.print("/");
     Serial.print(lane.lane_index);
     Serial.print("/");
     Serial.print(round(lane.current_angle));

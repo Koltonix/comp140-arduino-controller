@@ -15,16 +15,6 @@ namespace comp140.gameplay
         private GameObject inputObject;
         private ILane laneData;
 
-        [Header("UI Settings")]
-        [SerializeField]
-        private TextMeshProUGUI[] laneEncoderValue;
-        [SerializeField]
-        private TextMeshProUGUI[] laneTime;
-
-        [SerializeField]
-        private Image[] selectedColours;
-        [SerializeField]
-        private Image[] queuedColours;
 
         private void Start()
         {

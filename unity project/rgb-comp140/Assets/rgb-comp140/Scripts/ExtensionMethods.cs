@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-public static class ColourConverter
+public static class ExtensionMethods
 {
-    public static Color32 DecodeColourString(string colourInput)
+    public static Color32 DecodeColourString(this string colourInput)
     {
         if (colourInput == null) return Color.black;
 
@@ -20,7 +20,7 @@ public static class ColourConverter
             {
                 if (i == colourInput.Length - 1) currentValue += colourInput[i];
                 rgbValue[colourIndex] = Int32.Parse(currentValue);
-
+                
                 currentValue = "";
                 colourIndex++;
             }
