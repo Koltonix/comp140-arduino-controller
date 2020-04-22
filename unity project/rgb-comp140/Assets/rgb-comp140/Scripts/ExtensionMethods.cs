@@ -1,4 +1,9 @@
-﻿using System;
+﻿//////////////////////////////////////////////////
+// Christopher Robertson 2020.
+// https://github.com/Koltonix
+// MIT License Copyright (c) 2020
+//////////////////////////////////////////////////
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 

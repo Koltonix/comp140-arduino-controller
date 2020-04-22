@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections;
+﻿//////////////////////////////////////////////////
+// Christopher Robertson 2020.
+// https://github.com/Koltonix
+// MIT License Copyright (c) 2020
+//////////////////////////////////////////////////
+using System;
 using System.IO.Ports;
 using UnityEngine;
 
 using comp140.data;
-using comp140.interfaces;
 
 namespace comp140.input
 {
-    public class ArduinoInput : MonoBehaviour, ILane
+    public class ArduinoInput : MonoBehaviour
     {
         [Header("Arduino Settings")]
         [SerializeField]
@@ -86,18 +89,6 @@ namespace comp140.input
         {
             serial.Close();
         }
-
-        #region ILane Interface Implementation
-        public Lane GetLane(int index)
-        {
-            return lanes[index];
-        }
-
-        public Lane[] GetAllLanes()
-        {
-            return lanes;
-        }
-        #endregion
     }
 
 }
