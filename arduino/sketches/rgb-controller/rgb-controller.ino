@@ -83,6 +83,11 @@ void loop()
     UpdateLane(first_lane);
     UpdateLane(second_lane);
   }
+
+  else if (!can_input)
+  {
+    PlayLoseAnimation();
+  }
 }
 
 //Sends all of the data of the lane in one line to be decoded in Unity
@@ -106,6 +111,8 @@ void SendByteInput(Lane &lane)
     Serial.print(GetStringFromColour(lane.GetColourAtIndex(1)));
     Serial.print("/");
     Serial.print(GetStringFromColour(lane.GetColourAtIndex(2)));
+    Serial.print("/");
+    Serial.print(can_input);
     Serial.print(">");
     Serial.println(); 
 }
@@ -120,26 +127,21 @@ void UpdateLane(Lane &lane)
     first_lane.SetCurrentAngle(lane.encoder_value);
 
     //If the rotary encoder button has bee pressed
-    if (digitalRead(first_lane.button) > 0)
+    if (digitalRead(lane.button) > 0)
     {
       //Successful push
       if (lane.NextColourIsCurrent(lane.selected_colour))
       {
         lane.time_since_last = millis();
 
-        Serial.println("CORRECT");
         lane.RemoveNextColour(millis());
         score++;
       }
 
-      //Failed push
-      else 
+      //Failed push if you actually have scored yet
+      else
       {
-        Serial.println("INCORRECT"); 
-        score--;
-        
-        PlayLoseAnimation(lane);
-        GameOver();
+        can_input = false;
       }
     }
 
@@ -224,7 +226,6 @@ void UpdateLEDS(Lane& lane)
   }
 
   lane.pixels->show();
-  delay(500);
 }
 
 //Updates the rotary encoder RGB light 
@@ -241,7 +242,7 @@ void UpdateRotaryLEDs(Lane &lane)
 }
 
 //Plays a short lose animation on the Lane LEDs provided
-void PlayLoseAnimation(Lane &lane)
+void PlayLoseAnimation()
 {
   can_input = false;
 
@@ -249,21 +250,31 @@ void PlayLoseAnimation(Lane &lane)
   for (int j = 0; j < 3; j++)
   {
     //Red Blink
-    for (int i = 0; i < lane.led_amount; i++)
+    for (int i = 0; i < first_lane.led_amount; i++)
     {
-      lane.pixels->setPixelColor(i, lane.pixels->Color(255 * led_brightness, 0, 0));
+      first_lane.pixels->setPixelColor(i, first_lane.pixels->Color(255 * led_brightness, 0, 0));
+      second_lane.pixels->setPixelColor(i, second_lane.pixels->Color(255 * led_brightness, 0, 0));
     }
 
-    lane.pixels->show();
+    first_lane.pixels->show();
+    second_lane.pixels->show();
+    
+    SendByteInput(first_lane);
+    SendByteInput(second_lane);
     delay(500);
 
     //No Light
-    for (int i = 0; i < lane.led_amount; i++)
+    for (int i = 0; i < first_lane.led_amount; i++)
     {
-      lane.pixels->setPixelColor(i, lane.pixels->Color(0, 0, 0));
+      first_lane.pixels->setPixelColor(i, first_lane.pixels->Color(0, 0, 0));
+      second_lane.pixels->setPixelColor(i, second_lane.pixels->Color(0, 0, 0));
     }
 
-    lane.pixels->show();
+    first_lane.pixels->show();
+    second_lane.pixels->show();
+
+    SendByteInput(first_lane);
+    SendByteInput(second_lane);
     delay(500);
   }
 

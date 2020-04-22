@@ -38,6 +38,19 @@ namespace comp140.data
         }
 
         #endregion
+        [SerializeField]
+        #region private int canInput;
+        private bool canInput;
+        public bool CanInput
+        { 
+            get { return canInput; }
+            set
+            {
+                canInput = value;
+                lostImage.SetActive(!canInput);
+            }
+        }
+        #endregion
         [Space]
 
         [Header("Lane State")]
@@ -102,6 +115,8 @@ namespace comp140.data
 
         [SerializeField]
         private Image[] laneColours;
+        [SerializeField]
+        private GameObject lostImage;
 
         public Lane(int laneIndex)
         {
@@ -110,22 +125,26 @@ namespace comp140.data
 
         public void AssignStringsToValues(string[] allStrings)
         {
-            if (allStrings == null) return;
+            if (allStrings != null)
+            {
+                Score = Convert.ToInt32(allStrings[0]);
+                LaneIndex = Convert.ToInt32(allStrings[1]);
+                CurrentAngle = float.Parse(allStrings[2]);
+                EncoderValue = Convert.ToInt32(allStrings[3]);
+                TimeLeft = float.Parse(allStrings[4]);
 
-            Score = Convert.ToInt32(allStrings[0]);
-            LaneIndex = Convert.ToInt32(allStrings[1]);
-            CurrentAngle = float.Parse(allStrings[2]);
-            EncoderValue = Convert.ToInt32(allStrings[3]);
-            TimeLeft = float.Parse(allStrings[4]);
+                selectedColour = allStrings[5].DecodeColourString();
 
-            selectedColour = allStrings[5].DecodeColourString();
+                colourOrder = new Color32[3];
+                colourOrder[0] = allStrings[6].DecodeColourString();
+                colourOrder[1] = allStrings[7].DecodeColourString();
+                colourOrder[2] = allStrings[8].DecodeColourString();
 
-            colourOrder = new Color32[3];
-            colourOrder[0] = allStrings[6].DecodeColourString();
-            colourOrder[1] = allStrings[7].DecodeColourString();
-            colourOrder[2] = allStrings[8].DecodeColourString();
+                int canInputInt = Convert.ToInt32(allStrings[9]);
+                CanInput = Convert.ToBoolean(canInputInt);
 
-            SetColourImages();
+                SetColourImages();
+            }      
         }
 
         private void SetColourImages()
