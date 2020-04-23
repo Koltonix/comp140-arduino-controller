@@ -1,89 +1,75 @@
-﻿using System;
+﻿//////////////////////////////////////////////////
+// Christopher Robertson 2020.
+// https://github.com/Koltonix
+// MIT License Copyright (c) 2020
+//////////////////////////////////////////////////
+using System;
 using System.IO.Ports;
 using UnityEngine;
+using COMP140.Data;
 
-using comp140.data;
-using comp140.interfaces;
-
-namespace comp140.input
+namespace COMP140.Input
 {
-    public class ArduinoInput : MonoBehaviour, ILane
+    /// <summary>
+    /// Handles the Input from the Arduino using a Serial Communicator.
+    /// Assigns these values to the lanes.
+    /// </summary>
+    public class ArduinoInput : MonoBehaviour
     {
         [Header("Arduino Settings")]
         [SerializeField]
         private int commPort;
+        [SerializeField]
+        private int readTimeout = 50;
         private SerialPort serial = null;
 
         [Header("Input Settings")]
-        private const int numOfLanes = 2;
-        private Lane[] lanes = new Lane[numOfLanes];
+        public Lane[] lanes;
 
         private void Start()
         {
             ConnectToSerial();
-
-            for (int i = 0; i < numOfLanes; i++)
-            {
-                lanes[i] = new Lane(i);
-            }
         }
 
         private void Update()
         {
-            for (int i = 0; i < numOfLanes; i++)
+            string laneValues = ReadFromArduino(readTimeout);
+
+            //Checking the fourth element to see which lane it is
+            if (laneValues != null && laneValues[3] == '0')
             {
-                GetArduinoInput(i);
+                lanes[0].allValues = laneValues.DecodeArduinoString();
+                lanes[0].AssignStringsToValues(lanes[0].allValues);
+            }
+
+            //Checking the fourth element to see which lane it is
+            else if (laneValues != null && laneValues[3] == '1')
+            {
+                lanes[1].allValues = laneValues.DecodeArduinoString();
+                lanes[1].AssignStringsToValues(lanes[1].allValues);
             }
         }
 
+        /// <summary>Serial Communicator Initialisation.</summary>
         private void ConnectToSerial()
         {
             serial = new SerialPort("\\\\.\\COM" + commPort, 9600);
-            serial.ReadTimeout = 50;
+            serial.ReadTimeout = readTimeout;
             serial.Open();
-        }
-
-        private void GetArduinoInput(int laneIndex)
-        {
-            lanes[laneIndex].encoderValue = Convert.ToInt32(GetEncoderInputFromArduino("encoderValue" + laneIndex));
-            lanes[laneIndex].timeLeft = float.Parse(GetEncoderInputFromArduino("timeLeft" + laneIndex));
-
-            lanes[laneIndex].selectedColour = ColourConverter.DecodeColourString(GetEncoderInputFromArduino("selectedColour" + laneIndex));
-
-            lanes[laneIndex].colourOrder[0] = ColourConverter.DecodeColourString(GetEncoderInputFromArduino("firstColour" + laneIndex));
-            lanes[laneIndex].colourOrder[1] = ColourConverter.DecodeColourString(GetEncoderInputFromArduino("secondColour" + laneIndex));
-            lanes[laneIndex].colourOrder[2] = ColourConverter.DecodeColourString(GetEncoderInputFromArduino("thirdColour" + laneIndex));
-        }
-
-        private string GetEncoderInputFromArduino(string identifier)
-        {
-            WriteToArduino(identifier);
-            String value = ReadFromArduino(50);
-
-            if (value != null)
-            {
-                return value;
-            }
-
-            return null;
-        }
-
-        private void WriteToArduino(string message)
-        {
-            serial.WriteLine(message);
             serial.BaseStream.Flush();
         }
-
-        private string ReadFromArduino(int timeout = 0)
+        
+        /// <summary>Reads whatever the Arduino has printed to the Serial lane.</summary>
+        /// <param name="timeout">Time until it stops reading.</param>
+        /// <returns>The string transferred from the Arduino.</returns>
+        private string ReadFromArduino(int timeout)
         {
             serial.ReadTimeout = timeout;
-
             try
             {
                 return serial.ReadLine();
             }
-
-            catch
+            catch 
             {
                 return null;
             }
@@ -93,18 +79,6 @@ namespace comp140.input
         {
             serial.Close();
         }
-
-        #region ILane Interface Implementation
-        public Lane GetLane(int index)
-        {
-            return lanes[index];
-        }
-
-        public Lane[] GetAllLanes()
-        {
-            return lanes;
-        }
-        #endregion
     }
 
 }
