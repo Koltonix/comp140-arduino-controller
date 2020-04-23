@@ -52,6 +52,11 @@ Lane second_lane = Lane(1, rotary_a_two, rotary_b_two, encoder_button_two, red_e
 
 Lane* lanes[2];
 
+//Timer
+float time_until_loss = 10.0f;
+float time_since_last = 0.0f;
+float time_elapsed = 0.0f;
+
 void setup() 
 {
   Serial.begin(9600);
@@ -69,92 +74,10 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(second_lane.rotary_a), OnSecondEncoder, CHANGE);
 }
 
-
-void loop() 
-{
-  SendByteInput(first_lane);
-  SendByteInput(second_lane);
-
-  if (can_input)
-  {
-    //Serial.println(first_lane.time_since_last - millis() * 0.001f);
-    //if ((millis() - first_lane.time_since_last) * 0.001f > first_lane.default_time) Serial.println("LOST");
-
-    UpdateLane(first_lane);
-    UpdateLane(second_lane);
-  }
-
-  else if (!can_input)
-  {
-    PlayLoseAnimation();
-  }
-}
-
-//Sends all of the data of the lane in one line to be decoded in Unity
-void SendByteInput(Lane &lane)
-{
-    Serial.print("<");
-    Serial.print(score);
-    Serial.print("/");
-    Serial.print(lane.lane_index);
-    Serial.print("/");
-    Serial.print(round(lane.current_angle));
-    Serial.print("/");
-    Serial.print(lane.encoder_value);
-    Serial.print("/");
-    Serial.print(lane.time_since_last);
-    Serial.print("/");
-    Serial.print(GetStringFromColour(lane.selected_colour));
-    Serial.print("/");
-    Serial.print(GetStringFromColour(lane.GetColourAtIndex(0)));
-    Serial.print("/");
-    Serial.print(GetStringFromColour(lane.GetColourAtIndex(1)));
-    Serial.print("/");
-    Serial.print(GetStringFromColour(lane.GetColourAtIndex(2)));
-    Serial.print("/");
-    Serial.print(can_input);
-    Serial.print(">");
-    Serial.println(); 
-}
-
-
-//Updates for the Lane using a lane reference to modify and read
-void UpdateLane(Lane &lane)
-{
-    UpdateLEDS(lane);
-    UpdateRotaryLEDs(lane); 
-
-    first_lane.SetCurrentAngle(lane.encoder_value);
-
-    //If the rotary encoder button has bee pressed
-    if (digitalRead(lane.button) > 0)
-    {
-      //Successful push
-      if (lane.NextColourIsCurrent(lane.selected_colour))
-      {
-        lane.time_since_last = millis();
-
-        lane.RemoveNextColour(millis());
-        score++;
-      }
-
-      //Failed push if you actually have scored yet
-      else
-      {
-        can_input = false;
-      }
-    }
-
-    //Serial.println(String(lane.lane_index) + ": " + String(first_lane.current_percentage));
-    //Serial.println(String(first_lane.selected_colour.r) + ", " + String(first_lane.selected_colour.g) + ", " + String(first_lane.selected_colour.b));
-    lane.encoder_value = 0;
-}
-
 //Initial Setup of a lane using a lane reference
 void LaneSetup(Lane &lane)
 {
   lane.pixels->begin();
-  first_lane.time_since_last = 0.0f;
 
   for (int i = 0; i < initial_lane_size; i++)
   {
@@ -176,6 +99,98 @@ void RotaryEncoderSetup(Lane &lane)
   pinMode(lane.green_encoder, OUTPUT);
   pinMode(lane.blue_encoder, OUTPUT);
 }
+
+
+void loop() 
+{
+  SendByteInput(first_lane);
+  SendByteInput(second_lane);
+
+  CountDown();
+
+  if (can_input)
+  {
+    UpdateLane(first_lane);
+    UpdateLane(second_lane);
+    
+  }
+
+  else if (!can_input)
+  {
+    PlayLoseAnimation();
+  }
+}
+
+//Updates for the Lane using a lane reference to modify and read
+void UpdateLane(Lane &lane)
+{
+    UpdateLEDS(lane);
+    UpdateRotaryLEDs(lane); 
+
+    lane.SetCurrentAngle(lane.encoder_value);
+
+    //If the rotary encoder button has bee pressed
+    if (digitalRead(lane.button) > 0)
+    {
+      //Successful push
+      if (lane.NextColourIsCurrent(lane.selected_colour))
+      {
+        time_since_last = millis() * 0.001f;
+        time_elapsed = millis() * 0.001f;
+
+        lane.RemoveNextColour(millis());
+        score++;
+      }
+
+      //Failed push if you actually have scored yet
+      else
+      {
+        can_input = false;
+      }
+    }
+
+    //Serial.println(String(lane.lane_index) + ": " + String(first_lane.current_percentage));
+    //Serial.println(String(first_lane.selected_colour.r) + ", " + String(first_lane.selected_colour.g) + ", " + String(first_lane.selected_colour.b));
+    lane.encoder_value = 0;
+}
+
+void CountDown()
+{
+  if (score > 0) time_elapsed =  millis() * 0.001f;
+
+  if (time_since_last + time_until_loss < time_elapsed)
+  {
+    can_input = false;
+  }
+}
+
+//Sends all of the data of the lane in one line to be decoded in Unity
+void SendByteInput(Lane &lane)
+{
+    Serial.print("<");
+    Serial.print(score);
+    Serial.print("/");
+    Serial.print(lane.lane_index);
+    Serial.print("/");
+    Serial.print(round(lane.current_angle));
+    Serial.print("/");
+    Serial.print(lane.encoder_value);
+    Serial.print("/");
+    Serial.print(time_until_loss + (time_since_last - time_elapsed));
+    Serial.print("/");
+    Serial.print(GetStringFromColour(lane.selected_colour));
+    Serial.print("/");
+    Serial.print(GetStringFromColour(lane.GetColourAtIndex(0)));
+    Serial.print("/");
+    Serial.print(GetStringFromColour(lane.GetColourAtIndex(1)));
+    Serial.print("/");
+    Serial.print(GetStringFromColour(lane.GetColourAtIndex(2)));
+    Serial.print("/");
+    Serial.print(can_input);
+    Serial.print(">");
+    Serial.println(); 
+}
+
 
 
 //Separate function is required to attach to the interrupt in the setup
@@ -226,6 +241,7 @@ void UpdateLEDS(Lane& lane)
   }
 
   lane.pixels->show();
+  delay(100);
 }
 
 //Updates the rotary encoder RGB light 
@@ -286,6 +302,9 @@ void PlayLoseAnimation()
 //Resets the Game Values
 void GameOver()
 {
+  time_since_last = millis() * 0.001f;
+  time_elapsed = millis() * 0.001f;
+
   score = 0;
   setup();
 }
