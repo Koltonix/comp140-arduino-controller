@@ -7,9 +7,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>Stores all of the custom extension methods.</summary>
 public static class ExtensionMethods
 {
-    public static Color32 DecodeColourString(this string colourInput)
+    /// <summary>Converts a string to a Color32.</summary>
+    /// <param name="colourInput"></param>
+    /// <returns>The string as a Color32.</returns>
+    /// <remarks>The input should be the format of 'r,g,b'.</remarks>
+    public static Color32 ToColour(this string colourInput)
     {
         if (colourInput == null) return Color.black;
 
@@ -39,7 +45,13 @@ public static class ExtensionMethods
 
     private static string lastValue;
 
-    /// <0/0/60/0/0.00/255,0,0/0,0,255/255,255,0/0,255,255>
+    /// <summary>Decodes the Arduino Message and disconcatenate the strings</summary>
+    /// <param name="message"></param>
+    /// <returns>An string array of all of the values separated.</returns>
+    /// <remarks>
+    /// It should start and end with '<' and '>' and use '/' to separate values.
+    /// <0/0/60/0/0.00/255,0,0/0,0,255/255,255,0/0,255,255/0> Example.
+    /// </remarks>
     public static string[] DecodeArduinoString(this string message)
     {
         List<string> allStrings = new List<string>();

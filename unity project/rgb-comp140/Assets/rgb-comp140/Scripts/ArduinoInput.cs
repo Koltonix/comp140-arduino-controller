@@ -6,11 +6,14 @@
 using System;
 using System.IO.Ports;
 using UnityEngine;
+using COMP140.Data;
 
-using comp140.data;
-
-namespace comp140.input
+namespace COMP140.Input
 {
+    /// <summary>
+    /// Handles the Input from the Arduino using a Serial Communicator.
+    /// Assigns these values to the lanes.
+    /// </summary>
     public class ArduinoInput : MonoBehaviour
     {
         [Header("Arduino Settings")]
@@ -32,12 +35,14 @@ namespace comp140.input
         {
             string laneValues = ReadFromArduino(readTimeout);
 
+            //Checking the fourth element to see which lane it is
             if (laneValues != null && laneValues[3] == '0')
             {
                 lanes[0].allValues = laneValues.DecodeArduinoString();
                 lanes[0].AssignStringsToValues(lanes[0].allValues);
             }
 
+            //Checking the fourth element to see which lane it is
             else if (laneValues != null && laneValues[3] == '1')
             {
                 lanes[1].allValues = laneValues.DecodeArduinoString();
@@ -45,6 +50,7 @@ namespace comp140.input
             }
         }
 
+        /// <summary>Serial Communicator Initialisation.</summary>
         private void ConnectToSerial()
         {
             serial = new SerialPort("\\\\.\\COM" + commPort, 9600);
@@ -52,26 +58,10 @@ namespace comp140.input
             serial.Open();
             serial.BaseStream.Flush();
         }
-
-        private string GetEncoderInputFromArduino(string identifier)
-        {
-            WriteToArduino(identifier);
-            String value = ReadFromArduino(readTimeout);
-
-            if (value != null)
-            {
-                return value;
-            }
-
-            return null;
-        }
-
-        private void WriteToArduino(string message)
-        {
-            serial.WriteLine(message);
-            serial.BaseStream.Flush();
-        }
-            
+        
+        /// <summary>Reads whatever the Arduino has printed to the Serial lane.</summary>
+        /// <param name="timeout">Time until it stops reading.</param>
+        /// <returns>The string transferred from the Arduino.</returns>
         private string ReadFromArduino(int timeout)
         {
             serial.ReadTimeout = timeout;

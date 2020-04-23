@@ -4,13 +4,17 @@
 // MIT License Copyright (c) 2020
 //////////////////////////////////////////////////
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace comp140.data
+namespace COMP140.Data
 {
+    /// <summary>
+    /// Holds all of the data for the lane and the implementation
+    /// for assigning the values as well as updating their respective
+    /// UI elements.
+    /// </summary>
     [Serializable]
     public class Lane : MonoBehaviour
     {
@@ -128,6 +132,8 @@ namespace comp140.data
             this.LaneIndex = laneIndex;
         }
 
+        /// <summary>Assigns the variables using converters.</summary>
+        /// <param name="allStrings">All of the string variables to be assigned.</param>
         public void AssignStringsToValues(string[] allStrings)
         {
             if (allStrings != null)
@@ -138,12 +144,12 @@ namespace comp140.data
                 EncoderValue = Convert.ToInt32(allStrings[3]);
                 TimeLeft = float.Parse(allStrings[4]);
 
-                selectedColour = allStrings[5].DecodeColourString();
+                selectedColour = allStrings[5].ToColour();
 
                 colourOrder = new Color32[3];
-                colourOrder[0] = allStrings[6].DecodeColourString();
-                colourOrder[1] = allStrings[7].DecodeColourString();
-                colourOrder[2] = allStrings[8].DecodeColourString();
+                colourOrder[0] = allStrings[6].ToColour();
+                colourOrder[1] = allStrings[7].ToColour();
+                colourOrder[2] = allStrings[8].ToColour();
 
                 int canInputInt = Convert.ToInt32(allStrings[9]);
                 CanInput = Convert.ToBoolean(canInputInt);
@@ -152,6 +158,8 @@ namespace comp140.data
             }      
         }
 
+        /// <summary>Cycles through all of the lane images and assigns their colour.</summary>
+        /// <remarks>The first element should always be the selected colour image.</remarks>
         private void SetColourImages()
         {   
             for (int i = 0; i < laneColours.Length; i++)
