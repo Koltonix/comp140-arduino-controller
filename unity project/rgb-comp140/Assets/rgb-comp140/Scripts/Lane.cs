@@ -105,9 +105,9 @@ namespace COMP140.Data
         [Space]
 
         [Header("String Decoder")]
-        [HideInInspector]
-        private string lastValue;
         public string[] allValues;
+        [SerializeField]
+        private int numOfValuesExpected = 10;
         [Space]
 
         [Header("UI Settings")]
@@ -127,16 +127,11 @@ namespace COMP140.Data
         [SerializeField]
         private GameObject lostImage;
 
-        public Lane(int laneIndex)
-        {
-            this.LaneIndex = laneIndex;
-        }
-
         /// <summary>Assigns the variables using converters.</summary>
         /// <param name="allStrings">All of the string variables to be assigned.</param>
         public void AssignStringsToValues(string[] allStrings)
         {
-            if (allStrings != null)
+            if (allStrings != null && allStrings.Length == numOfValuesExpected)
             {
                 Score = Convert.ToInt32(allStrings[0]);
                 LaneIndex = Convert.ToInt32(allStrings[1]);
