@@ -103,6 +103,8 @@ void RotaryEncoderSetup(Lane &lane)
 
 void loop() 
 {
+  KeyboardInput();
+
   SendByteInput(first_lane);
   SendByteInput(second_lane);
 
@@ -121,6 +123,23 @@ void loop()
   }
 }
 
+//Input for the keyboard to work with the controller
+void KeyboardInput()
+{
+  char byte;
+  if (Serial.available() > 0)
+  {
+    byte = Serial.read();
+    if (byte == 'q') first_lane.SetCurrentAngle(1.0f);
+    if (byte == 'e') first_lane.SetCurrentAngle(-1.0f);
+    if (byte == 'w') CheckForWin(first_lane);
+
+    if (byte == 'a') second_lane.SetCurrentAngle(1.0f);
+    if (byte == 'd') second_lane.SetCurrentAngle(-1.0f);
+    if (byte == 's') CheckForWin(second_lane);
+  }
+}
+
 //Updates for the Lane using a lane reference to modify and read
 void UpdateLane(Lane &lane)
 {
@@ -132,26 +151,30 @@ void UpdateLane(Lane &lane)
     //If the rotary encoder button has bee pressed
     if (digitalRead(lane.button) > 0)
     {
-      //Successful push
-      if (lane.NextColourIsCurrent(lane.selected_colour))
-      {
-        time_since_last = millis() * 0.001f;
-        time_elapsed = millis() * 0.001f;
-
-        lane.RemoveNextColour(millis());
-        score++;
-      }
-
-      //Failed push if you actually have scored yet
-      else
-      {
-        can_input = false;
-      }
+      CheckForWin(lane);
     }
 
-    //Serial.println(String(lane.lane_index) + ": " + String(first_lane.current_percentage));
-    //Serial.println(String(first_lane.selected_colour.r) + ", " + String(first_lane.selected_colour.g) + ", " + String(first_lane.selected_colour.b));
     lane.encoder_value = 0;
+}
+
+//Checks for the win using a lane reference
+void CheckForWin(Lane &lane)
+{
+  //Successful push
+  if (lane.NextColourIsCurrent(lane.selected_colour))
+  {
+    time_since_last = millis() * 0.001f;
+    time_elapsed = millis() * 0.001f;
+
+    lane.RemoveNextColour(millis());
+    score++;
+  }
+
+  //Failed push if you actually have scored yet
+  else
+  {
+    can_input = false;
+  }
 }
 
 void CountDown()
