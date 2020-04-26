@@ -2,6 +2,11 @@
 # Final Design
 ![Arduino](https://github.com/Koltonix/comp140-arduino-controller/blob/master/images/casing/arduino-casing.png)
 
+## Keyboard Debugging Controls
+|Lane       |Negative  |Positive|Submit|
+|-----------|----------|--------|------|
+|First Lane |Q         |E       |W     |        
+|Second Lane|A         |D       |S     |
 
 ## Component List
 - [1m LED Strip](https://coolcomponents.co.uk/products/led-light-strip-rgb-w-ww-60-led-with-rgb-white-and-warm-white-1m?_pos=1&_sid=d26b4b85e&_ss=r)
